@@ -1,0 +1,29 @@
+﻿@page "{CollectionSearch?}"
+@using PlayDeckRazor.Model
+@model IndexModel
+@{
+    ViewData["Title"] = "Home";
+}
+
+
+
+<div id="default-decks-container" class="d-flex flex-column justify-content-center">
+    @{
+        @* Deck ID 1 = Currently Playing (On Deck) *@
+        ViewData["Deck"] = Model.Decks[1];
+        await Html.RenderPartialAsync("_DeckDisplay", Model);
+    }
+    @{
+        @* Deck ID 2 = Complete *@
+        ViewData["Deck"] = Model.Decks[2];
+        await Html.RenderPartialAsync("_DeckDisplay", Model);
+    }
+</div>
+
+@* Space for custom decks *@
+
+@{
+        @* Deck ID 0 = Collection / Unassigned *@
+    ViewData["Deck"] = Model.Decks[0];
+    await Html.RenderPartialAsync("_DeckDisplay", Model);
+}

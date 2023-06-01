@@ -1,0 +1,163 @@
+﻿.game-info {
+    gap: 0.5vw;
+}
+
+.game-info-header {
+    border-bottom-width: 2px;
+    border-bottom-style: solid;
+    border-image: linear-gradient(90deg, #eb4155, #D82929, #eb4155) 1;
+}
+
+h1 {
+    font-size: 60px;
+}
+
+.star-button {
+    text-decoration: none !important;
+    color: whitesmoke !important;
+    background: none;
+    border: none;
+    padding: 0;
+    margin: 0;
+    font-size: 50px;
+    
+}
+
+.checked {
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-image: linear-gradient(135deg, #34A7DC, #285CD6);
+    transition: .15s;
+}
+
+.checked:hover {
+    transition: .25s;
+    transform: scale(1.2);
+}
+
+.unchecked {
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-image: linear-gradient(135deg, #34A7DC, #285CD6);
+    transition: .15s;
+}
+
+.unchecked:hover {
+    transition: .25s;
+    transform: scale(1.2);
+}
+
+.trophy-checked {
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-image: linear-gradient(135deg, goldenrod, darkgoldenrod);
+    transition: .15s;
+}
+
+.trophy-unchecked {
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-image: linear-gradient(135deg, goldenrod, darkgoldenrod);
+    transition: .15s;
+}
+
+.play-status-text {
+    font-size: 30px;
+    margin-top: 5px;
+}
+
+.trophy-button {
+    border: none;
+    padding: 0;
+    margin: 0;
+    font-size: 30px;
+    transition: .15s;
+}
+
+.trophy-button:hover {
+    transition: .25s;
+    transform: scale(1.2);
+}
+
+.edit-title {
+    margin: 0;
+    transition: .15s;
+}
+
+.edit-title:hover {
+    transition: .25s;
+    transform: scale(1.2);
+    cursor: pointer;
+}
+
+
+.edit-details-button {
+    margin-top: auto;
+    padding: 0 0.6vw;
+    height: 3vw;
+    width: 17vw;
+    border-image: linear-gradient(135deg, #34A7DC, #285CD6) 1;
+    border-width: 2px;
+    transition: 0.1s;
+    color: whitesmoke;
+    font-family: "Open Sans SemiBold", "Segoe UI", sans-serif;
+    text-align: center;
+    line-height: 3vw;
+}
+
+.edit-details-button:hover {
+    background-image: linear-gradient(135deg, #34A7DC, #285CD6);
+    transition: 0.1s;
+}
+
+.edit-details-button:active {
+    background-color: #285CD6;
+    border-color: #285CD6;
+    background-image: none;
+    transition: 0.1s;
+}
+
+.delete-button {
+    margin-top: auto;
+    padding: 0 0.6vw;
+    height: 3vw;
+    width: 17vw;
+    border-image: linear-gradient(135deg, #eb4155, #D82929) 1;
+    border-width: 2px;
+    transition: 0.1s;
+    color: whitesmoke;
+    font-family: "Open Sans SemiBold", "Segoe UI", sans-serif;
+}
+
+.delete-button:hover {
+    background-image: linear-gradient(135deg, #eb4155, #D82929);
+    transition: 0.1s;
+}
+
+.delete-button:active {
+    background-color: #D82929;
+    border-color: #D82929;
+    background-image: none;
+    transition: 0.1s;
+}
+
+.deck-link-container {
+    margin-top: 10px;
+    margin-left: 0.5vw;
+    transition: .15s;
+}
+
+.deck-link-container:hover {
+    transition: .25s;
+    transform: scale(1.2);
+}
+
+.deck-link{
+    transition: .15s;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-image: linear-gradient(135deg, #34A7DC, #285CD6);
+}
+
+.deck-link:hover {
+}

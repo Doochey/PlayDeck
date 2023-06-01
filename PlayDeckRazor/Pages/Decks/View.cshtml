@@ -1,0 +1,42 @@
+﻿@page "{id:int}/{title}/{CollectionSearch?}"
+@using PlayDeckRazor.Model
+@model ViewModel
+
+@{
+    ViewData["Title"] = Model.Deck.Title;
+}
+
+@* Displays a single deck and all games in it, with search, different than _DeckDisplay partial *@
+
+<div id="@Model.Deck.Title-container" class="deck-display-container d-flex flex-column justify-content-center">
+    <div id="@Model.Deck.Title-header" class="deck-header d-flex">
+        <div id="@Model.Deck.Title-title" class="deck-title">
+            <h1>@Model.Deck.Title</h1>
+        </div>
+        <div class="add-game-button-container">
+            <a class="add-game-button btn btn-primary" asp-page="/Games/Edit" asp-route-DeckID="@Model.Deck.ID" role="button">+</a>
+        </div>
+        <div class="deck-search ">
+            <form>
+                <p>
+                    <input type="text" asp-for="CollectionSearch" />
+                    <input type="submit" value="Search" />
+                </p>
+            </form>
+        </div>
+    </div>
+    <div id="@Model.Deck.Title-display pull-left" class="deck-display d-flex justify-content-center">
+        <ul id="@Model.Deck.Title-cards" class="deck d-flex flex-wrap">
+            @{
+                @* GameCard requires IndexModel *@
+                var m = new IndexModel(Model._context);
+                List<Game> sortedList = Model.Deck.GameList.OrderBy(g=>g.Title).ToList();
+                foreach (Game g in sortedList)
+                {
+                    ViewData["GameCard"] = g;
+                    await Html.RenderPartialAsync("_GameCard", m);
+                } 
+            }
+        </ul>
+    </div>
+</div>

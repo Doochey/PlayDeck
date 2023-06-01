@@ -1,0 +1,181 @@
+﻿@using PlayDeckRazor.Model
+@model GameViewModel
+@{
+    if (ViewData["GameView"] is Game g)
+    {
+       <div class="game-info d-flex flex-column">
+        <div class="game-info-header d-flex">
+            <h1>@g.Title</h1>
+            <p class="bi bi-pencil edit-title" data-bs-toggle="modal" data-bs-target="#edit-title-modal" title="Edit Title"></p>
+        </div>
+           @{
+               @* Star Rating Display *@
+               if (g.Rating != null)
+               {
+                   <div class="d-flex" style="gap: 1vw">
+                       @{
+                           for (int i = 1; i < 11; i++)
+                           {
+                               if (i <= @g.Rating)
+                               {
+                                   <form method="post">
+                                       <input asp-for="gameID" class="form-control" value="@g.ID" type="hidden"/>
+                                       <input asp-for="ratingChange" class="form-control" value="@i" type="hidden"/>
+                                       <button class="star-button bi bi-star-fill checked"
+                                               type="submit"
+                                               formmethod="post"
+                                               title="@i /10">
+                                       </button>
+                                   </form>
+                               }
+                               else
+                               {
+                                   <form method="post">
+                                       <input asp-for="gameID" class="form-control" value="@g.ID" type="hidden"/>
+                                       <input asp-for="ratingChange" class="form-control" value="@i" type="hidden"/>
+                                       <button class="star-button bi bi-star unchecked"
+                                               type="submit"
+                                               formmethod="post"
+                                               title="@i /10">
+                                       </button>
+                                   </form>
+                               }
+                    
+                           }
+                       }
+                   </div>
+                
+               }
+               else
+               {
+                   <div class="d-flex" style="gap: 1vw">
+                       @{
+                           for (int i = 1; i < 11; i++)
+                           {
+                               <form method="post">
+                                   <input asp-for="gameID" class="form-control" value="@g.ID" type="hidden"/>
+                                   <input asp-for="ratingChange" class="form-control" value="@i" type="hidden"/>
+                                   <button class="star-button bi bi-star unchecked"
+                                           type="submit"
+                                           formmethod="post"
+                                           title="@i /10">
+                                   </button>
+                               </form>
+                           } 
+                       }
+                   </div>
+               }
+               
+               @* Game Details Display *@
+               <div class="d-flex" style="gap: 1vw; margin-top: 2vw">
+                   <div class="d-flex flex-column" style="gap: 2vw; width: 17vw;">
+                       <div class="d-flex" style="gap: 1vw;">
+                           @{
+                               if (g.PlayStatus == 1) @* Game has been completed *@
+                               {
+                                   <form method="post">
+                                       <input asp-for="gameID" class="form-control" value="@g.ID" type="hidden"/>
+                                       <input asp-for="playStatusChange" class="form-control" value="0" type="hidden"/>
+                                       <button class="trophy-button bi-trophy-fill trophy-checked"
+                                               type="submit"
+                                               formmethod="post"
+                                               title="Toggle complete status">
+                                       </button>
+                                   </form>
+                                   <h2 class="play-status-text">Complete</h2>
+                               }
+                               else
+                               {
+                                   <form method="post">
+                                       <input asp-for="gameID" class="form-control" value="@g.ID" type="hidden"/>
+                                       <input asp-for="playStatusChange" class="form-control" value="1" type="hidden"/>
+                                       <button class="trophy-button bi-trophy trophy-unchecked"
+                                               type="submit"
+                                               formmethod="post"
+                                               title="Toggle complete status">
+                                       </button>
+                                   </form>
+                                   <h2 class="play-status-text">Unfinished</h2>
+                               }
+                           }
+                       </div>
+                       
+                       @{
+                           if (g.PlayTime > 0)
+                           {
+                               <h3>Play time: @(g.PlayTime)h</h3>
+                           }
+                           else
+                           {
+                               <h3>Play time: None</h3>
+                           }
+                       }
+
+                       @{
+                           if (g.LastPlayed != null)
+                           {
+                               <h3>Last Played: @g.LastPlayed?.ToShortDateString()</h3>
+                           }
+                           else
+                           {
+                               <h3>Last Played: Never</h3>
+                           }
+                       }
+                       
+                       
+                       <a class="edit-details-button btn" href="/Games/Edit?id=@g.ID" title="Edit game details">Edit Details</a>
+                   </div>
+                   
+                               
+                   <div class="d-flex flex-column" style="gap: 2vw;">
+                       <div class="d-flex">
+                           @{
+                               string s = "None";
+                               switch (g.DeckID)
+                               {
+                                   case 0:
+                                       s = "My Collection";
+                                       break;
+                                   case 1:
+                                       s = "Currently Playing";
+                                       break;
+                                   case 2:
+                                       s = "Complete";
+                                       break;
+                               }
+                               <h3 style="margin-top: 8px">Deck: @s</h3>
+                               <h3 class="deck-link-container" title="View all cards in deck"><a id="deck-link" class="deck-link bi bi-arrow-right-square-fill" href="/Decks/View/@g.DeckID/@s"></a></h3>
+                               
+                           }
+                       </div>
+                       
+                       @{
+                           if (g.StartDate != null)
+                           {
+                               <h3>Start Date: @g.StartDate?.ToShortDateString()</h3>
+                           }
+                           else
+                           {
+                               <h3>Start Date: Unknown</h3>
+                           }
+                       }
+                       @{
+                           if (g.PlayStatus == 1 && g.CompleteDate != null)
+                           {
+                               <h3>Complete Date: @g.CompleteDate?.ToShortDateString()</h3>
+                           }
+                           else if (g.PlayStatus == 1 && g.CompleteDate == null)
+                           {
+                               <h3>Complete Date: Unknown</h3>
+                           }
+                       }
+                       
+                       <button class="delete-button btn" type="button" data-bs-toggle="modal" data-bs-target="#delete-modal-@g.ID" title="Delete game">Delete</button>
+                   </div>
+               </div>
+           }
+
+       </div> 
+    }
+    
+}

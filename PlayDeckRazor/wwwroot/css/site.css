@@ -1,0 +1,316 @@
+html {
+  font-size: 14px;
+}
+
+@media (min-width: 768px) {
+  html {
+    font-size: 16px;
+  }
+}
+
+html {
+  position: relative;
+  min-height: 100%;
+}
+
+.nav-link {
+  color: whitesmoke;
+  font-family: "Open Sans SemiBold", "Segoe UI", sans-serif;
+}
+
+.nav-link:hover {
+  color: #34a7dc;
+}
+
+body {
+  margin-bottom: 5.3vw;
+  background-color: #141414;
+  color: whitesmoke;
+  font-family: "Open Sans", "Segoe UI",sans-serif;
+}
+
+.table {
+  color: whitesmoke;
+}
+
+h1 {
+  color: whitesmoke;
+  font-family: "Open Sans SemiBold", "Segoe UI",sans-serif;
+}
+
+.modal-content {
+  background-color: #141414;
+  color: whitesmoke;
+  font-family: "Open Sans", "Segoe UI",sans-serif;
+  font-size: 18px;
+  border-color: #eb4155;
+  border-style: solid;
+  border-width: 1px;
+}
+
+.modal-header {
+  border-color: #34a7dc;
+}
+
+.modal-footer {
+  border-color: #34a7dc;
+}
+
+.deck-display-container {
+  margin: 1vw;
+  max-width: 75vw;
+  height: auto;
+}
+
+.deck-display {
+  max-width: 60vw;
+}
+
+.deck-header {
+  gap: 0.5vw;
+}
+
+.deck-title {
+  padding: 0.5vw;
+}
+
+.add-game-button-container {
+  padding-left: 0.5vw;
+  
+}
+
+.add-game-button {
+  text-decoration: none;
+  color: whitesmoke;
+  font-family: "Open Sans SemiBold", "Segoe UI", sans-serif;
+  font-size: 20pt;
+  font-weight: bolder;
+}
+
+.deck-search {
+  padding-top: 1vw;
+  margin-left: auto;
+}
+
+.view-all-container {
+  padding-top: 1vw;
+  margin-left: auto;
+}
+
+.view-all-button {
+  text-decoration: none;
+  font-family: "Open Sans", "Segoe UI", sans-serif;
+}
+
+.btn-primary {
+  margin-top: 0.6vw;
+  padding: 0 0.6vw;
+  background-color: transparent;
+  border-color: #34a7dc;
+  border-image: linear-gradient(135deg, #34A7DC, #285CD6) 1;
+  border-width: 3px;
+  border-style: solid;
+  transition: 0.1s;
+}
+
+.btn-primary:hover {
+  border-color: #34a7dc;
+  border-image: linear-gradient(135deg, #34A7DC, #285CD6) 1;
+  background-image: linear-gradient(135deg, #34A7DC, #285CD6);
+  transition: 0.1s;
+}
+
+.btn-primary:active {
+  background-color: #285CD6;
+  border-color: #285CD6;
+  background-image: none;
+}
+
+
+.deck {
+  list-style-type: none;
+  gap: 1vw;
+}
+
+.game-card {
+  height: 15vw;
+  width: 10vw;
+  transition: 0.2s;
+}
+
+.game-card img {
+  max-width: 18vw;
+  max-height: 15vw;
+  filter: drop-shadow(8px 8px 10px #000);
+  border-radius: 3%;
+  position: relative;
+}
+
+.game-card:hover {
+  transform: scale(1.1);
+  transition: 0.5s;
+}
+
+.edit-game-container {
+  visibility: hidden;
+  position: absolute;
+  top: 2%;
+  left: 2%;
+  text-decoration: none;
+  color: whitesmoke;
+  opacity: 60%;
+  cursor: pointer;
+  border-radius: 100%;
+}
+
+.edit-game-button {
+  font-size: large;
+  min-width: 2vw;
+  min-height: 2vw;
+  border-style: dashed;
+  border-width: 0.2vw;
+  border-color: #34a7dc;
+  text-align: center;
+  border-radius: 100%;
+}
+
+.edit-game-button p {
+  font-weight: bolder;
+}
+
+.edit-game-container:hover {
+  opacity: 100%;
+}
+
+.edit-game-button:hover {
+  background-image: linear-gradient(135deg, #34a7dc, #285CD6);
+  border-style: solid;
+  border-color: whitesmoke;
+  color: whitesmoke;
+}
+
+.delete-game-container {
+  visibility: hidden;
+  position: absolute;
+  top: 2%;
+  right: 2%;
+  text-decoration: none;
+  color: whitesmoke;
+  opacity: 60%;
+  cursor: pointer;
+  border-radius: 100%;
+}
+
+.delete-game-button {
+  font-size: large;
+  min-width: 2vw;
+  min-height: 2vw;
+  border-style: dashed;
+  border-width: 0.2vw;
+  border-color: #eb4155;
+  text-align: center;
+  border-radius: 100%;
+}
+
+.delete-game-button p {
+  font-weight: bolder;
+}
+
+.delete-game-container:hover {
+  opacity: 100%;
+}
+
+.delete-game-button:hover {
+  background-image: linear-gradient(135deg, #eb4155, #920406);
+  border-style: solid;
+  border-color: whitesmoke;
+  color: whitesmoke;
+}
+
+.rating-display-container {
+  visibility: hidden;
+  position: absolute;
+  bottom: 2%;
+  right: 2%;
+  text-decoration: none;
+  color: whitesmoke;
+  font-weight: bold;
+  font-size: large;
+  padding: 0.3vw;
+  border-radius: 10%;
+  background-color: rgba(6,3,3,0.45);
+}
+
+.checked {
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-image: linear-gradient(135deg, #34A7DC, #285CD6);
+}
+
+.trophy-display-container {
+  visibility: hidden;
+  position: absolute;
+  bottom: 15%;
+  right: 2%;
+  font-weight: bold;
+  font-size: large;
+  padding: 0.3vw 0.6vw;
+  border-radius: 10%;
+  background-color: rgba(6,3,3,0.45);
+}
+
+.trophy-checked {
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-image: linear-gradient(135deg, goldenrod, darkgoldenrod);
+}
+
+.trophy-unchecked {
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-image: linear-gradient(135deg, goldenrod, darkgoldenrod);
+}
+
+.game-card:hover .delete-game-container {
+  visibility: visible;
+}
+
+.game-card:hover .edit-game-container {
+  visibility: visible;
+}
+
+.game-card:hover .rating-display-container {
+  visibility: visible;
+}
+
+.game-card:hover .trophy-display-container {
+  visibility: visible;
+}
+
+.game-cover-container:hover .delete-game-container {
+  visibility: visible;
+}
+
+.game-cover-container:hover .edit-game-container {
+  visibility: visible;
+}
+
+.card {
+  background-color: transparent;
+}
+
+.placeholder-container {
+  position: relative;
+  text-align: center;
+}
+
+.placeholder-text {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-family: "Open Sans SemiBold", "Segoe UI", sans-serif;
+  color: whitesmoke;
+  font-size: 20px;
+}
+

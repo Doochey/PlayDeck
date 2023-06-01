@@ -1,0 +1,18 @@
+﻿#page-container {
+    gap: 5vw;
+}
+
+.game-cover-image {
+    max-width: 24vw;
+    max-height: 33vw;
+    filter: drop-shadow(8px 8px 10px #000);
+    border-radius: 3%;
+    
+}
+
+.game-cover-container {
+    position: relative;
+}
+
+
+

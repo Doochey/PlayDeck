@@ -1,0 +1,24 @@
+﻿.input-group {
+    font-family: "Open Sans", "Segoe UI", sans-serif;
+    font-size: large;
+}
+
+h1 {
+    padding-bottom: 1vw;
+    border-bottom-style: solid;
+    border-bottom-width: 2px;
+    border-image: linear-gradient(90deg, #eb4155, #D82929, #eb4155) 1;
+}
+
+.submit-button-container {
+    border-top-style: solid;
+    border-top-width: 2px;
+    border-image: linear-gradient(90deg, #eb4155, #D82929, #eb4155) 1;
+}
+
+.submit-button{
+    min-height: 4vw;
+    min-width: 10vw;
+    font-size: larger;
+    font-weight: bold;
+}
