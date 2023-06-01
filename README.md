@@ -52,6 +52,7 @@
     <li>
       <a href="#getting-started">Getting Started</a>
       <ul>
+        <li><a href="#prerequisites">Prerequisites</a></li>
         <li><a href="#installation">Installation</a></li>
       </ul>
     </li>
@@ -95,6 +96,9 @@ Add each game to one of three Decks:
 ## Getting Started
 
 Visit the [Releases](https://github.com/Doochey/PlayDeck/releases) tab and download the latest release, usually titled something like v1.0.0 or v1.0.0-beta
+
+### Prerequisites
+* Install [SQL Server Express 2022](https://learn.microsoft.com/en-us/sql/database-engine/configure-windows/sql-server-express-localdb?view=sql-server-ver16) and follow the instructions on the page to install LocalDB
 
 ### Installation
 
