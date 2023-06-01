@@ -1,12 +1,10 @@
 ﻿@page "{CollectionSearch?}"
-@using PlayDeckRazor.Model
 @model IndexModel
 @{
     ViewData["Title"] = "Home";
 }
 
-
-
+@* These decks will always be displayed first *@
 <div id="default-decks-container" class="d-flex flex-column justify-content-center">
     @{
         @* Deck ID 1 = Currently Playing (On Deck) *@
@@ -23,7 +21,7 @@
 @* Space for custom decks *@
 
 @{
-        @* Deck ID 0 = Collection / Unassigned *@
+    @* Deck ID 0 = Collection / Unassigned *@
     ViewData["Deck"] = Model.Decks[0];
     await Html.RenderPartialAsync("_DeckDisplay", Model);
 }

@@ -1,35 +1,40 @@
 ﻿@using PlayDeckRazor.Model
 @model IndexModel
+
+@* Displays a card representing a game entry *@
+
 @{
     if (ViewData["GameCard"] is Game g)
     {
+        @* Add modal for each card to allow posting with respective id. Can be replaced with a single dynamic modal *@
+        @* using javascript but using as little custom js as possible was a self imposed limitation *@
         <li>
             <div class="modal fade" id="delete-modal-@g.ID" tabindex="-1" role="dialog" aria-labelledby="delete-modal-title" aria-hidden="true">
-                        <div class="modal-dialog modal-dialog-centered" role="document">
-                            <div class="modal-content">
-                                <div class="modal-header">
-                                    <h2 class="modal-title" id="delete-modal-title-@g.ID">Warning!</h2>
-                                </div>
-                                <div class="modal-body">
-                                    <p>
-                                        Are you sure you want to remove <span style="color: #eb4155; font-weight: bold">@g.Title</span> from your collection? If you want to change which deck
-                                        the game belongs to, use the edit button.
-                                    </p>
-                                </div>
-                                <div class="modal-footer">
-                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" title="Cancel">Cancel</button>
-                                    <form method="post">
-                                        <input type="hidden" asp-for="gameDeleteID" value="@g.ID"/>
-                                        <input type="submit" value="I'm Sure" class="btn btn-danger" title="Delete game"/>
-                                    </form>
-                                </div>
-                            </div>
+                <div class="modal-dialog modal-dialog-centered" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h2 class="modal-title" id="delete-modal-title-@g.ID">Warning!</h2>
+                        </div>
+                        <div class="modal-body">
+                            <p>
+                                Are you sure you want to remove <span style="color: #eb4155; font-weight: bold">@g.Title</span> from your collection? If you want to change which deck
+                                the game belongs to, use the edit button.
+                            </p>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" title="Cancel">Cancel</button>
+                            <form method="post">
+                                <input type="hidden" asp-for="GameDeleteId" value="@g.ID"/>
+                                <input type="submit" value="I'm Sure" class="btn btn-danger" title="Delete game"/>
+                            </form>
                         </div>
                     </div>
+                </div>
+            </div>
             <div class="game-card card">
                 <a asp-page="/GameView" asp-route-id="@g.ID">
                     @{
-                        // Form image alt text
+                        @* Dynamically form image alt text *@
                         string s = g.Title + " video-game cover";
 
                         if (string.IsNullOrEmpty(g.ImageURL))
@@ -38,7 +43,6 @@
                                 <img class="card-img-top" src="/Resources/Cover Placeholder.png" alt="@s">
                                 <p class="placeholder-text">@g.Title</p>
                             </div>
-
                         }
                         else
                         {
@@ -59,7 +63,7 @@
                 <div class="rating-display-container d-flex flex-column">
                     <div style="margin-left: auto; margin-right: auto">
                         @{
-                            if (g.PlayStatus == 1)
+                            if (g.PlayStatus == 1) @* If game is complete display filled trophy *@
                             {
                                 <span class="bi bi-trophy-fill trophy-checked"></span>
                             }

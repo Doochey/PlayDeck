@@ -2,25 +2,27 @@
 @model PlayDeckRazor.Pages.GameViewModel
 
 @{
-    ViewData["Title"] = Model.game?.Title + " Details";
+    ViewData["Title"] = Model.Game?.Title + " Details";
 }
 
-<div class="modal fade" id="delete-modal-@Model.game?.ID" tabindex="-1" role="dialog" aria-labelledby="delete-modal-title" aria-hidden="true">
+@* Page for displaying single game details *@
+
+<div class="modal fade" id="delete-modal-@Model.Game?.ID" tabindex="-1" role="dialog" aria-labelledby="delete-modal-title" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h2 class="modal-title" id="delete-modal-title-@Model.game?.ID">Warning!</h2>
+                <h2 class="modal-title" id="delete-modal-title-@Model.Game?.ID">Warning!</h2>
             </div>
             <div class="modal-body">
                 <p>
-                    Are you sure you want to remove <span style="color: #eb4155; font-weight: bold">@Model.game?.Title</span> from your collection? If you want to change which deck
+                    Are you sure you want to remove <span style="color: #eb4155; font-weight: bold">@Model.Game?.Title</span> from your collection? If you want to change which deck
                     the game belongs to, use the edit button.
                 </p>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" title="Cancel">Cancel</button>
                 <form method="post">
-                    <input type="hidden" asp-for="gameDeleteID" value="@Model.game?.ID" />
+                    <input type="hidden" asp-for="GameDeleteID" value="@Model.Game?.ID" />
                     <input type="submit" value="I'm Sure" class="btn btn-danger" title="Delete game"/>
                 </form>
             </div>
@@ -32,26 +34,25 @@
     <div class="modal-dialog modal-dialog-centered" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h2 class="modal-title" id="edit-modal-title-@Model.game?.ID">Edit Title</h2>
+                <h2 class="modal-title" id="edit-modal-title-@Model.Game?.ID">Edit Title</h2>
             </div>
             <form method="post">
                 <div class="modal-body">
                     <p>
-                        Enter new title for <span style="color: #eb4155; font-weight: bold">@Model.game?.Title</span>
+                        Enter new title for <span style="color: #eb4155; font-weight: bold">@Model.Game?.Title</span>
                     </p>
                     <div class="form-group">
-                        <input asp-for="titleChange" class="form-control" value="@Model.game?.Title"/>
+                        <input asp-for="TitleChange" class="form-control" value="@Model.Game?.Title"/>
                         <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-                        <span asp-validation-for="titleChange" class="text-danger"></span>
+                        <span asp-validation-for="TitleChange" class="text-danger"></span>
                     </div>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" title="Cancel">Cancel</button>
-                    <input type="hidden" asp-for="gameID" value="@Model.game?.ID" />
+                    <input type="hidden" asp-for="GameID" value="@Model.Game?.ID" />
                     <input type="submit" value="Submit" class="btn btn-primary" title="Save name change" style="padding: 0.3rem 0.75rem; margin-top: 0.3rem"/>
                 </div>
             </form>
-            
         </div>
     </div>
 </div>
@@ -60,24 +61,23 @@
     <div class="game-cover-container">
         @{
             // Form image alt text
-            string s = @Model.game?.Title + " video-game cover";
+            string s = @Model.Game?.Title + " video-game cover";
 
-            if (string.IsNullOrEmpty(@Model.game?.ImageURL))
+            if (string.IsNullOrEmpty(@Model.Game?.ImageURL))
             {
                 <div class="placeholder-container">
                     <img class="game-cover-image" src="/Resources/Cover Placeholder.png" alt="@s">
-                    <p class="placeholder-text">@Model.game?.Title</p>
+                    <p class="placeholder-text">@Model.Game?.Title</p>
                 </div>
-
             }
             else
             {
-                <img class="game-cover-image" src="@Model.game?.ImageURL" alt="@s">
+                <img class="game-cover-image" src="@Model.Game?.ImageURL" alt="@s">
             }
         }
     </div>
     <div class="game-info-container">
-        @{ ViewData["GameView"] = Model.game;}
+        @{ ViewData["GameView"] = Model.Game;}
         @{await Html.RenderPartialAsync("_GameInfoPanel");}
     </div>
 </div>

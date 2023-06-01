@@ -14,53 +14,31 @@ public class GameViewModel : PageModel
     private readonly PlayDeckRazorContext _context;
     
     
-    public Game? game { get; set; }
+    public Game? Game { get; set; }
     
     [BindProperty]
-    public int? ratingChange { get; set; }
+    public int? RatingChange { get; set; }
     [BindProperty]
-    public int? playStatusChange { get; set; }
+    public int? PlayStatusChange { get; set; }
     [BindProperty]
-    public int gameID { get; set; }
+    public int GameID { get; set; }
     
     [BindProperty]
-    public int? gameDeleteID { get; set; }
+    public int? GameDeleteID { get; set; }
     
     [StringLength(50, MinimumLength = 1), Display(Name = "Title")]
     [BindProperty]
-    public string? titleChange { get; set; }
+    public string? TitleChange { get; set; }
     
-    
-    public List<SelectListItem> Decks { get; set; }
-
     public GameViewModel(PlayDeckRazorContext context)
     {
         _context = context;
-        
-        Decks = new List<SelectListItem>
-        {
-            new()
-            {
-                Text = "My Collection",
-                Value = "0"
-            },
-            new()
-            {
-                Text = "Currently Playing",
-                Value = "1"
-            },
-            new()
-            {
-                Text = "Complete",
-                Value = "2"
-            }
-        };
     }
     
     public async Task<IActionResult> OnGetAsync(int id)
     {
-        game = await _context.Game.FindAsync(id);
-        if (game == null)
+        Game = await _context.Game.FindAsync(id);
+        if (Game == null)
         {
             return NotFound();
         }
@@ -75,40 +53,41 @@ public class GameViewModel : PageModel
             return Page();
         }
 
-        if (gameDeleteID != null)
+        if (GameDeleteID != null)
         {
-            game = await _context.Game.FindAsync(gameDeleteID);
-            if (game == null)
+            // Ensure game exists and delete
+            Game = await _context.Game.FindAsync(GameDeleteID);
+            if (Game == null)
             {
                 return NotFound();
             }
-            _context.Remove(game);
+            _context.Remove(Game);
             await _context.SaveChangesAsync();
             return RedirectToPage("/Index");
         }
         
-        game = await _context.Game.FindAsync(gameID);
-        if (game == null)
+        Game = await _context.Game.FindAsync(GameID);
+        if (Game == null)
         {
             return NotFound();
         }
         
-        if (ratingChange != null)
+        if (RatingChange != null)
         {
-            game.Rating = ratingChange;
+            Game.Rating = RatingChange;
         }
 
-        if (playStatusChange != null)
+        if (PlayStatusChange != null)
         {
-            game.PlayStatus = playStatusChange;
+            Game.PlayStatus = PlayStatusChange;
         }
         
-        if (titleChange != null)
+        if (TitleChange != null)
         {
-            game.Title = titleChange;
+            Game.Title = TitleChange;
         }
         
-        _context.Attach(game).State = EntityState.Modified;
+        _context.Attach(Game).State = EntityState.Modified;
         
         await _context.SaveChangesAsync();
 
