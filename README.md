@@ -180,7 +180,7 @@ Project Link: [https://github.com/Doochey/PlayDeck](https://github.com/Doochey/P
 
 <!-- MARKDOWN LINKS & IMAGES -->
 <!-- https://www.markdownguide.org/basic-syntax/#reference-style-links -->
-[license-shield]: https://img.shields.io/github/license/doochey/PlayDeck.svg?style=for-the-badge
+[license-shield]: https://img.shields.io/github/license/Doochey/PlayDeck.svg?style=for-the-badge
 [license-url]: https://github.com/Doochey/PlayDeck/blob/master/LICENSE.txt
 [linkedin-shield]: https://img.shields.io/badge/-LinkedIn-black.svg?style=for-the-badge&logo=linkedin&colorB=555
 [linkedin-url]: https://linkedin.com/in/connordouch
