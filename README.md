@@ -100,10 +100,12 @@ Visit the [Releases](https://github.com/Doochey/PlayDeck/releases) tab and downl
 
 1. Extract the contents of the rar to the folder you would like to use as the base for the application
 2. Double click to run the PlayDeckRazor.exe
-3. You should see a console window open, after a short time it should look like this ![image](https://github.com/Doochey/PlayDeck/assets/22661442/f33f43c5-931a-4f0b-9ec7-26304d6ddd06)
+3. You should see a console window open, after a short time it should look like this ![image](https://github.com/Doochey/PlayDeck/assets/22661442/1ea6d664-3fca-41fd-ab14-d513020076b2)
+
 
 5. Open your browser and navigate to https://localhost:6610/
-6. Unless you are using a Demo version you should see this: ![image](https://github.com/Doochey/PlayDeck/assets/22661442/9902e69b-a47e-4d10-8b4e-55f6afb4fae5)
+6. Unless you are using a Demo version you should see this: ![image](https://github.com/Doochey/PlayDeck/assets/22661442/e18ee891-f7c8-4f5a-9333-fa9b8caca0a8)
+
 
 7. You are now ready to use PlayDeck! Begin by adding games to any of the three decks by clicking the + buttons. When you're done, close the console and browser window, 
    when you want to view or edit your decks again, simply run the PlayDeckRazor.exe and navigate to https://localhost:6610/ like you did the first time.
@@ -119,27 +121,32 @@ Visit the [Releases](https://github.com/Doochey/PlayDeck/releases) tab and downl
 Adding a new game:
 
 Click +
-![add game gif](https://github.com/Doochey/PlayDeck/assets/22661442/872cbbb3-e6c6-4b0d-b2ee-8307e57a06f4)
+![add game gif](https://github.com/Doochey/PlayDeck/assets/22661442/2a80749b-8f6b-4d31-a5c5-382ac0a5d0d4)
+
 
 Enter details and click 'Create'
-![image](https://github.com/Doochey/PlayDeck/assets/22661442/132e3808-a65d-45e3-9851-2e3a28728e07)
+![image](https://github.com/Doochey/PlayDeck/assets/22661442/5ef67f1e-0e0a-4e70-90fe-ddeaac9e3c31)
+
 
 Deleting a game from the deck view:
 
 Hover over the card and click the 'X' button
-![delete gif](https://github.com/Doochey/PlayDeck/assets/22661442/3f9f521a-1dce-4bb4-8b61-7a7d5275f0c3)
+![delete gif](https://github.com/Doochey/PlayDeck/assets/22661442/44b2e66d-52c3-4361-b9f0-68d484a7474a)
+
 
 Deleting a game from the game details view:
 
 Click the delete button
-![delete gif 2](https://github.com/Doochey/PlayDeck/assets/22661442/f6320cf4-fa4d-4205-9752-d22844aa5ad3)
+![delete gif 2](https://github.com/Doochey/PlayDeck/assets/22661442/13fd28fa-5208-4741-baea-5cc05c0622c3)
+
 
 To edit any details about a game, such as which deck the game appears in, either:
 * Click the buttons on the game details page, this is only available for the Title,Star Rating and Complete Trophy
 * Click the 'Edit Details' button on the game details page
 * Hover over the card in the deck view and click the pencil button
 
-![image](https://github.com/Doochey/PlayDeck/assets/22661442/1203f758-844f-4b85-9533-c14dee6a5002)
+![image](https://github.com/Doochey/PlayDeck/assets/22661442/9a29c9d7-8b64-4e82-97e3-36ef5de8153d)
+
 
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
@@ -184,6 +191,6 @@ Project Link: [https://github.com/Doochey/PlayDeck](https://github.com/Doochey/P
 [license-url]: https://github.com/Doochey/PlayDeck/blob/master/LICENSE.txt
 [linkedin-shield]: https://img.shields.io/badge/-LinkedIn-black.svg?style=for-the-badge&logo=linkedin&colorB=555
 [linkedin-url]: https://linkedin.com/in/connordouch
-[product-screenshot]: https://github.com/Doochey/PlayDeck/assets/22661442/ed969af9-4cbe-421e-915b-e58eeef0dedc
+[product-screenshot]: https://github.com/Doochey/PlayDeck/assets/22661442/9e592298-21f7-4810-9f16-3f66bc16a847
 [Bootstrap.com]: https://img.shields.io/badge/Bootstrap-563D7C?style=for-the-badge&logo=bootstrap&logoColor=white
 [Bootstrap-url]: https://getbootstrap.com
