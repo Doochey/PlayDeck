@@ -27,7 +27,7 @@
 <br />
 <div align="center">
   <a href="https://github.com/Doochey/PlayDeck">
-    <img src="PlayDeckRazor/wwwroot/Resources/Icon Large.png" alt="Logo" width="80" height="80">
+    <img src="PlayDeckRazor/wwwroot/Resources/Icon large.png" alt="Logo" width="100" height="150">
   </a>
 
 <h3 align="center">Play Deck</h3>
