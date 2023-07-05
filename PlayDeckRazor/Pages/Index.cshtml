@@ -4,24 +4,53 @@
     ViewData["Title"] = "Home";
 }
 
-@* These decks will always be displayed first *@
-<div id="default-decks-container" class="d-flex flex-column justify-content-center">
+<div x-data="{
+            gameTitle: '', 
+            gameId: '', 
+            setInfo(id, title) {this.gameId = id; this.gameTitle=title;}
+            }">
+    <div class="modal fade" id="delete-modal" tabindex="-1" role="dialog" aria-labelledby="delete-modal-title" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h2 class="modal-title" id="delete-modal-title">Warning!</h2>
+                </div>
+                <div class="modal-body">
+                    <p>
+                        Are you sure you want to remove <span style="color: #eb4155; font-weight: bold" x-text="gameTitle"></span> from your collection? If you want to change which deck
+                        the game belongs to, use the edit button.
+                    </p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" title="Cancel">Cancel</button>
+                    <form method="post">
+                        <input type="hidden" asp-for="GameDeleteId" x-model="gameId"/>
+                        <input type="submit" value="I'm Sure" class="btn btn-danger" title="Delete game"/>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    @* These decks will always be displayed first *@
+    <div id="default-decks-container" class="d-flex flex-column justify-content-center">
+        @{
+            @* Deck ID 1 = Currently Playing (On Deck) *@
+            ViewData["Deck"] = Model.Decks[1];
+            await Html.RenderPartialAsync("_DeckDisplay", Model);
+        }
+        @{
+            @* Deck ID 2 = Complete *@
+            ViewData["Deck"] = Model.Decks[2];
+            await Html.RenderPartialAsync("_DeckDisplay", Model);
+        }
+    </div>
+    
+    @* Space for custom decks *@
+    
     @{
-        @* Deck ID 1 = Currently Playing (On Deck) *@
-        ViewData["Deck"] = Model.Decks[1];
-        await Html.RenderPartialAsync("_DeckDisplay", Model);
-    }
-    @{
-        @* Deck ID 2 = Complete *@
-        ViewData["Deck"] = Model.Decks[2];
+        @* Deck ID 0 = Collection / Unassigned *@
+        ViewData["Deck"] = Model.Decks[0];
         await Html.RenderPartialAsync("_DeckDisplay", Model);
     }
 </div>
-
-@* Space for custom decks *@
-
-@{
-    @* Deck ID 0 = Collection / Unassigned *@
-    ViewData["Deck"] = Model.Decks[0];
-    await Html.RenderPartialAsync("_DeckDisplay", Model);
-}

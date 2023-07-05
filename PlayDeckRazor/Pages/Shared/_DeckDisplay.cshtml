@@ -1,5 +1,6 @@
 ﻿@using PlayDeckRazor.Model
 @using Microsoft.AspNetCore.Mvc.TagHelpers
+@using NuGet.Protocol
 @model IndexModel
 
 @* Displays games associated with the corresponding deck id *@
@@ -7,7 +8,7 @@
 @{
     if (ViewData["Deck"] is Deck d)
     {
-        <div id="@d.Title-container" class="deck-display-container d-flex flex-column justify-content-center">
+        <div id="@d.Title-container" class="deck-display-container d-flex flex-column justify-content-center" x-data="{ search: ''}">
             <div id="@d.Title-header" class="deck-header d-flex">
                 <div id="@d.Title-title" class="deck-title">
                     <h1>@d.Title</h1>
@@ -20,10 +21,9 @@
                     if (d.ID == 0) 
                     {
                         <div class="deck-search ">
-                            <form>
+                            <form x-on:submit.prevent="{}">
                                 <p>
-                                    <input type="text" asp-for="CollectionSearch" />
-                                    <input type="submit" value="Search" title="Search Deck"/>
+                                    <input x-on:keyup.enter.prevent="{}" type="text" x-model.debounce="search" placeholder="Search..."/>
                                 </p>
                             </form>
                         </div>
@@ -51,26 +51,11 @@
                         {
                             case 0:
                                 @* 'My Collection', sort by alphabetical, Display 10 cards *@
-                                if (!string.IsNullOrEmpty(Model.CollectionSearch))
+                                sortedList = d.GameList.OrderBy(g=>g.Title).ToList(); 
+                                for (int i = 0; i < 10 && i < sortedList.Count; i++)
                                 {
-                                    if (Model.FilteredList != null) @* If user submitted search string *@
-                                    {
-                                        sortedList = Model.FilteredList.OrderBy(g=>g.Title).ToList(); 
-                                        for (int i = 0; i <= 10 && i < sortedList.Count; i++)
-                                        {
-                                            ViewData["GameCard"] = sortedList[i];
-                                            await Html.RenderPartialAsync("_GameCard", Model);
-                                        }
-                                    }
-                                }
-                                else
-                                {
-                                    sortedList = d.GameList.OrderBy(g=>g.Title).ToList();
-                                    for (int i = 0; i <= 10 && i < sortedList.Count; i++)
-                                    {
-                                        ViewData["GameCard"] = sortedList[i];
-                                        await Html.RenderPartialAsync("_GameCard", Model);
-                                    }
+                                    ViewData["GameCard"] = sortedList[i];
+                                    await Html.RenderPartialAsync("_GameCard", Model);
                                 }
                                 break;
                             case 1:

@@ -8,29 +8,8 @@
     {
         @* Add modal for each card to allow posting with respective id. Can be replaced with a single dynamic modal *@
         @* using javascript but using as little custom js as possible was a self imposed limitation *@
-        <li>
-            <div class="modal fade" id="delete-modal-@g.ID" tabindex="-1" role="dialog" aria-labelledby="delete-modal-title" aria-hidden="true">
-                <div class="modal-dialog modal-dialog-centered" role="document">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h2 class="modal-title" id="delete-modal-title-@g.ID">Warning!</h2>
-                        </div>
-                        <div class="modal-body">
-                            <p>
-                                Are you sure you want to remove <span style="color: #eb4155; font-weight: bold">@g.Title</span> from your collection? If you want to change which deck
-                                the game belongs to, use the edit button.
-                            </p>
-                        </div>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" title="Cancel">Cancel</button>
-                            <form method="post">
-                                <input type="hidden" asp-for="GameDeleteId" value="@g.ID"/>
-                                <input type="submit" value="I'm Sure" class="btn btn-danger" title="Delete game"/>
-                            </form>
-                        </div>
-                    </div>
-                </div>
-            </div>
+        <li x-data="{title: '@g.Title'}" x-show="title.toLowerCase().trim().includes(search.toLowerCase().trim())">
+            
             <div class="game-card card">
                 <a asp-page="/GameView" asp-route-id="@g.ID">
                     @{
@@ -50,7 +29,7 @@
                         }
                     }
                 </a>
-                <a class="delete-game-container" title="Delete" data-bs-toggle="modal" data-bs-target="#delete-modal-@g.ID">
+                <a class="delete-game-container" title="Delete" data-bs-toggle="modal" data-bs-target="#delete-modal" x-on:click="setInfo(@g.ID, '@g.Title')">
                     <div class="delete-game-button d-inline-flex justify-content-center">
                         <p style="margin: 0">X</p>
                     </div>

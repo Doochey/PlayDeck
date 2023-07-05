@@ -1,7 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using Microsoft.AspNetCore.Mvc.Rendering;
-using Microsoft.EntityFrameworkCore;
 using PlayDeckRazor.Data;
 using PlayDeckRazor.Model;
 
@@ -16,12 +14,6 @@ public class IndexModel : PageModel
     /// 3 -> 10 for user allocation
     /// </summary>
     public List<Deck> Decks = new List<Deck>(10);
-    
-    /// <summary>
-    /// Search string submitted by user
-    /// </summary>
-    [BindProperty(SupportsGet = true)]
-    public string? CollectionSearch { get; set; }
     
     public List<Game>? FilteredList { get; set; }
     
@@ -40,7 +32,7 @@ public class IndexModel : PageModel
     public IndexModel(PlayDeckRazorContext context)
     {
         _context = context;
-
+        
         // TODO: Replace with db query when Deck storage is implemented
         for (int i = 0; i < Decks.Capacity; i++)
         {
@@ -58,19 +50,6 @@ public class IndexModel : PageModel
         {
             Decks[g.DeckID].GameList.Add(g);
         }
-        
-        // If user submitted search string
-        if (!string.IsNullOrEmpty(CollectionSearch))
-        {
-            // Select all games in deck 0 (My Collection) that contain search string in game title
-            var games = 
-                from g in _context.Game
-                select g;
-            games = games.Where(s => s.Title.Contains(CollectionSearch) && s.DeckID == 0);
-            FilteredList = await games.ToListAsync();
-        }
-
-        
     }
 
     public async Task<IActionResult> OnPostAsync()
