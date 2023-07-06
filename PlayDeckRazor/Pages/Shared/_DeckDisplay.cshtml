@@ -1,6 +1,5 @@
 ﻿@using PlayDeckRazor.Model
 @using Microsoft.AspNetCore.Mvc.TagHelpers
-@using NuGet.Protocol
 @model IndexModel
 
 @* Displays games associated with the corresponding deck id *@
@@ -70,6 +69,15 @@
                             case 2:
                                  @* 'Complete', Sort by most recently completed, Display 5 cards *@
                                 sortedList = d.GameList.OrderByDescending(g=>g.CompleteDate).ToList();
+                                for (int i = 0; i < 5 && i < sortedList.Count; i++)
+                                {
+                                    ViewData["GameCard"] = sortedList[i];
+                                    await Html.RenderPartialAsync("_GameCard", Model);
+                                }
+                                break;
+                            case 3:
+                                 @* 'Wishlist', Sort by most recently added (DB id), Display 5 cards *@
+                                sortedList = d.GameList.OrderByDescending(g=>g.ID).ToList();
                                 for (int i = 0; i < 5 && i < sortedList.Count; i++)
                                 {
                                     ViewData["GameCard"] = sortedList[i];

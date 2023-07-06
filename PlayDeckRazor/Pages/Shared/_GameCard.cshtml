@@ -8,7 +8,7 @@
     {
         @* Add modal for each card to allow posting with respective id. Can be replaced with a single dynamic modal *@
         @* using javascript but using as little custom js as possible was a self imposed limitation *@
-        <li x-data="{title: '@g.Title'}" x-show="title.toLowerCase().trim().includes(search.toLowerCase().trim())">
+        <li x-data="{title: '@g.Title'}" x-show="title.toLowerCase().trim().includes(search.toLowerCase().trim())" id="game-card-@g.ID">
             
             <div class="game-card card">
                 <a asp-page="/GameView" asp-route-id="@g.ID">
@@ -25,7 +25,7 @@
                         }
                         else
                         {
-                            <img class="card-img-top" src="@g.ImageURL" alt="@s">
+                            <img class="card-img-top" src="@g.ImageURL" alt="@s" loading="lazy">
                         }
                     }
                 </a>
@@ -34,7 +34,7 @@
                         <p style="margin: 0">X</p>
                     </div>
                 </a>
-                <a asp-page="/Games/Edit" asp-route-id="@g.ID" class="edit-game-container" title="Edit">
+                <a data-bs-toggle="modal" data-bs-target="#delete-modal" class="edit-game-container" title="Edit" x-on:click="GetGameDetails(@g.ID, $data)">
                     <div class="edit-game-button d-inline-flex justify-content-center">
                         <p class="bi bi-pencil" style="margin: 0"></p>
                     </div>

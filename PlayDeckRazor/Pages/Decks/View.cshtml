@@ -7,35 +7,64 @@
 }
 
 @* Displays a single deck and all games in it, with search, different than _DeckDisplay partial *@
+<div x-data="{
+            gameTitle: '', 
+            gameId: '', 
+            setInfo(id, title) {this.gameId = id; this.gameTitle=title;}
+            }">
+    <div class="modal fade" id="delete-modal" tabindex="-1" role="dialog" aria-labelledby="delete-modal-title" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h2 class="modal-title" id="delete-modal-title">Warning!</h2>
+                    </div>
+                    <div class="modal-body">
+                        <p>
+                            Are you sure you want to remove <span style="color: #eb4155; font-weight: bold" x-text="gameTitle"></span> from your collection? If you want to change which deck
+                            the game belongs to, use the edit button.
+                        </p>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" title="Cancel">Cancel</button>
+                        <form x-on:submit.prevent="SendDelete()" method="post" id="delete-modal-form" asp-page-handler="delete">
+                            <input type="hidden" asp-for="GameDeleteId" x-model="gameId"/>
+                            <input x-on:submit.prevent="{}" type="submit" value="I'm Sure" class="btn btn-danger" title="Delete game" data-bs-toggle="modal" data-bs-target="#delete-modal"/>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
 
-<div x-data="{ search: ''}" id="@Model.Deck.Title-container" class="deck-display-container d-flex flex-column justify-content-center">
-    <div id="@Model.Deck.Title-header" class="deck-header d-flex">
-        <div id="@Model.Deck.Title-title" class="deck-title">
-            <h1>@Model.Deck.Title</h1>
+    <div x-data="{ search: ''}" id="@Model.Deck.Title-container" class="deck-display-container d-flex flex-column justify-content-center">
+        <div id="@Model.Deck.Title-header" class="deck-header d-flex">
+            <div id="@Model.Deck.Title-title" class="deck-title">
+                <h1>@Model.Deck.Title</h1>
+            </div>
+            <div class="add-game-button-container">
+                <a class="add-game-button btn btn-primary" asp-page="/Games/Edit" asp-route-DeckID="@Model.Deck.ID" role="button">+</a>
+            </div>
+            <div class="deck-search ">
+                <form x-on:submit.prevent="{}">
+                    <p>
+                        <input x-on:keyup.enter.prevent="{}" type="text" x-model.debounce="search" placeholder="Search..."/>
+                    </p>
+                </form>
+            </div>
         </div>
-        <div class="add-game-button-container">
-            <a class="add-game-button btn btn-primary" asp-page="/Games/Edit" asp-route-DeckID="@Model.Deck.ID" role="button">+</a>
-        </div>
-        <div class="deck-search ">
-            <form x-on:submit.prevent="{}">
-                <p>
-                    <input x-on:keyup.enter.prevent="{}" type="text" x-model.debounce="search" placeholder="Search..."/>
-                </p>
-            </form>
-        </div>
-    </div>
-    <div id="@Model.Deck.Title-display pull-left" class="deck-display d-flex justify-content-center">
-        <ul id="@Model.Deck.Title-cards" class="deck d-flex flex-wrap">
-            @{
+        <div id="@Model.Deck.Title-display pull-left" class="deck-display d-flex justify-content-center">
+            <ul id="@Model.Deck.Title-cards" class="deck d-flex flex-wrap">
+                @{
                 @* GameCard requires IndexModel *@
-                var m = new IndexModel(Model._context);
-                List<Game> sortedList = Model.Deck.GameList.OrderBy(g=>g.Title).ToList();
-                foreach (Game g in sortedList)
-                {
-                    ViewData["GameCard"] = g;
-                    await Html.RenderPartialAsync("_GameCard", m);
-                } 
-            }
-        </ul>
+                    var m = new IndexModel(Model._context);
+                    List<Game> sortedList = Model.Deck.GameList.OrderBy(g=>g.Title).ToList();
+                    foreach (Game g in sortedList)
+                    {
+                        ViewData["GameCard"] = g;
+                        await Html.RenderPartialAsync("_GameCard", m);
+                    } 
+                }
+            </ul>
+        </div>
     </div>
+
 </div>

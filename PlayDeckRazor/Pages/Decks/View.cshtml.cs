@@ -39,35 +39,16 @@ public class ViewModel : PageModel
             Title = title
         };
         
-        // If user submitted search string
-        if (!string.IsNullOrEmpty(CollectionSearch))
-        {
-            // Select all games with this deck id that also contain search string in game title
-            var games = 
-                from g in _context.Game
-                select g;
-            games = games.Where(s => s.Title.Contains(CollectionSearch) && s.DeckID == Deck.ID);
-            List<Game> result = await games.ToListAsync();
+        // Select all games with this deck id
+        var games = 
+            from g in _context.Game
+            select g;
+        games = games.Where(s => s.DeckID == Deck.ID);
+        List<Game> result = await games.ToListAsync();
             
-            // Add results to deck
-            foreach (Game g in result)
-            {
-                Deck.GameList.Add(g);
-            }
-        }
-        else
+        foreach (Game g in result)
         {
-            // Select all games with this deck id
-            var games = 
-                from g in _context.Game
-                select g;
-            games = games.Where(s => s.DeckID == Deck.ID);
-            List<Game> result = await games.ToListAsync();
-            
-            foreach (Game g in result)
-            {
-                Deck.GameList.Add(g);
-            }
+            Deck.GameList.Add(g);
         }
     }
 

@@ -1,4 +1,5 @@
 ﻿@page "{CollectionSearch?}"
+@using PlayDeckRazor.Pages.Shared
 @model IndexModel
 @{
     ViewData["Title"] = "Home";
@@ -6,7 +7,8 @@
 
 <div x-data="{
             gameTitle: '', 
-            gameId: '', 
+            gameId: '',
+            editMode: false,
             setInfo(id, title) {this.gameId = id; this.gameTitle=title;}
             }">
     <div class="modal fade" id="delete-modal" tabindex="-1" role="dialog" aria-labelledby="delete-modal-title" aria-hidden="true">
@@ -23,9 +25,9 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" title="Cancel">Cancel</button>
-                    <form method="post">
+                    <form x-on:submit.prevent="SendDelete()" method="post" id="delete-modal-form" asp-page-handler="delete">
                         <input type="hidden" asp-for="GameDeleteId" x-model="gameId"/>
-                        <input type="submit" value="I'm Sure" class="btn btn-danger" title="Delete game"/>
+                        <input x-on:submit.prevent="{}" type="submit" value="I'm Sure" class="btn btn-danger" title="Delete game" data-bs-toggle="modal" data-bs-target="#delete-modal"/>
                     </form>
                 </div>
             </div>
@@ -44,6 +46,11 @@
             ViewData["Deck"] = Model.Decks[2];
             await Html.RenderPartialAsync("_DeckDisplay", Model);
         }
+        @{
+            @* Deck ID 3 = Wishlist *@
+            ViewData["Deck"] = Model.Decks[3];
+            await Html.RenderPartialAsync("_DeckDisplay", Model);
+        }
     </div>
     
     @* Space for custom decks *@
@@ -53,4 +60,19 @@
         ViewData["Deck"] = Model.Decks[0];
         await Html.RenderPartialAsync("_DeckDisplay", Model);
     }
+    
+    <div class="toast-container position-fixed bottom-0 end-0 p-3">
+      <div id="liveToast" class="toast" role="alert" aria-live="assertive" aria-atomic="true">
+        <div class="toast-header">
+          <img src="favicon.ico" class="rounded me-2" alt="...">
+          <strong class="me-auto" id="toast-operation">Deleted</strong>
+          <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+        </div>
+        <div class="toast-body">
+          <span style="color: #eb4155; font-weight: bold" x-text="gameTitle"></span> <span id="toast-operation-text">was removed from the database.</span>
+        </div>
+      </div>
+    </div>
 </div>
+
+

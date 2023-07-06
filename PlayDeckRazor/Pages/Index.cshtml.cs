@@ -7,7 +7,7 @@ namespace PlayDeckRazor.Pages;
 
 public class IndexModel : PageModel
 {
-    private readonly PlayDeckRazorContext _context;
+    public readonly PlayDeckRazorContext _context;
 
     /// <summary>
     /// List of Decks containing all Games in the DB, Max 10 decks, 0 = Unassigned, 1 = On deck, 2 = completed
@@ -41,6 +41,7 @@ public class IndexModel : PageModel
         Decks[0].Title = "My Collection";
         Decks[1].Title = "Currently Playing";
         Decks[2].Title = "Complete";
+        Decks[3].Title = "Wishlist";
     }
 
     public async Task OnGetAsync()
@@ -54,6 +55,7 @@ public class IndexModel : PageModel
 
     public async Task<IActionResult> OnPostAsync()
     {
+        /*
         if (GameDeleteId != null)
         {
             // Ensure game exists and delete
@@ -64,6 +66,27 @@ public class IndexModel : PageModel
                 await _context.SaveChangesAsync();
             }
         }
+        */
         return RedirectToPage("./Index");
+    }
+
+    public async Task<IActionResult> OnPostDeleteAsync()
+    {
+        
+        if (GameDeleteId != null)
+        {
+            // Ensure game exists and delete
+            var game = await _context.Game.FindAsync(GameDeleteId);
+            if (game != null)
+            {
+                _context.Remove(game);
+                await _context.SaveChangesAsync();
+                return new OkObjectResult(GameDeleteId);
+            }
+            
+            return new NotFoundResult();
+            
+        }
+        return new BadRequestResult();
     }
 }
