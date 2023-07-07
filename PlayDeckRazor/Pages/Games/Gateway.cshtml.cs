@@ -79,7 +79,32 @@ public class GatewayModel : PageModel
         }
         return new BadRequestResult();
     }
-    
+
+    public async Task<IActionResult> OnPostAddAsync()
+    {
+        if (!ModelState.IsValid && !GameExists(Game.ID))
+        {
+            _context.Game.Add(Game);
+            await _context.SaveChangesAsync();
+
+            IndexModel newPartialModel = new IndexModel(_context);
+            ViewDataDictionary newViewData = new ViewDataDictionary(new Microsoft.AspNetCore.Mvc.ModelBinding.EmptyModelMetadataProvider(),
+                new Microsoft.AspNetCore.Mvc.ModelBinding.ModelStateDictionary()) { { "IndexModel", newPartialModel } };
+            newViewData.Model = newPartialModel;
+            newViewData["GameCard"] = Game;
+            return new PartialViewResult()
+            {
+                ViewName = "_GameCard",
+                ViewData = newViewData,
+            };
+        }
+        else
+        {
+            return new BadRequestResult();
+        }
+        
+    }
+
     private bool GameExists(int id)
     {
         return (_context.Game?.Any(e => e.ID == id)).GetValueOrDefault();

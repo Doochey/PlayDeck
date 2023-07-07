@@ -13,6 +13,7 @@ document.addEventListener('alpine:init', () => {
         playTime: '',
         lastPlayed: '',
         mode: '',
+        deckTitle: '',
 
         setInfo(id, title) {this.gameId = id; this.gameTitle=title;},
         setInfoFull(id, title, deckId, imageUrl, playStatus, startDate, completeDate, rating, playTime, lastPlayed) {
@@ -43,6 +44,10 @@ async function GetGameDetails(id) {
         .catch(errorMsg => { console.log(errorMsg); });
 }
 
+function ResetGameDetails() {
+    Alpine.store('gameData').setInfoFull(null,null, null, null, null, null, null, null, null, null);
+}
+
 
 
 function ShowToast(operation, text) {
@@ -60,7 +65,7 @@ async function SendDelete() {
         .then(response => response.text())
         .then(data => {
             document.querySelector('#game-card-' + data).remove();
-            ShowToast('Deletion', 'was removed from the database');
+            ShowToast('Deletion', 'was removed from the database.');
         })
         .catch(errorMsg => { console.log(errorMsg); });
 }
@@ -75,19 +80,22 @@ async function SendEdit(id) {
             newCard.innerHTML = data;
             oldCard =  document.querySelector('#game-card-' + id);
             oldCard.parentNode.replaceChild(newCard, oldCard);
-            ShowToast('Edit', 'was modified');
+            ShowToast('Edit', 'was modified.');
         })
         .catch(errorMsg => { console.log(errorMsg); });
 }
 
-async function SendAdd() {
-    await fetch('https://localhost:6610/index?handler=delete', {
+async function SendAdd(deckTitle) {
+    await fetch('https://localhost:6610/Games/Gateway/add/', {
         method: 'POST',
-        body: new FormData(document.querySelector('#delete-modal-form'))})
+        body: new FormData(document.querySelector('#edit-modal-form'))})
         .then(response => response.text())
         .then(data => {
-            document.querySelector('#game-card-' + data).remove();
-            ShowToast('Deletion', 'was removed from the database');
+            newCard = document.createElement('div');
+            newCard.innerHTML = data;
+            deckCardsDisplay =  document.getElementById(deckTitle + '-cards');
+            deckCardsDisplay.prepend(newCard);
+            ShowToast('Add', 'was added to ' + deckTitle + ' deck.');
         })
         .catch(errorMsg => { console.log(errorMsg); });
 }
