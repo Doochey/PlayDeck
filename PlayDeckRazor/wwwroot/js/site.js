@@ -71,10 +71,10 @@ async function SendEdit(id) {
         body: new FormData(document.querySelector('#edit-modal-form'))})
         .then(response => response.text())
         .then(data => {
-            newItem = document.createElement('div');
-            newItem.innerHTML = data;
-            oldItem =  document.querySelector('#game-card-' + id);
-            oldItem.parentNode.replaceChild(newItem, oldItem);
+            newCard = document.createElement('div');
+            newCard.innerHTML = data;
+            oldCard =  document.querySelector('#game-card-' + id);
+            oldCard.parentNode.replaceChild(newCard, oldCard);
             ShowToast('Edit', 'was modified');
         })
         .catch(errorMsg => { console.log(errorMsg); });

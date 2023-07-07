@@ -58,7 +58,6 @@
                             <input x-on:submit.prevent="{}" type="submit" value="I'm Sure" class="btn btn-danger" title="Delete game" data-bs-toggle="modal" data-bs-target="#delete-modal"/>
                         </form>
                     </template>
-                    
                 </div>
             </div>
         </div>
@@ -92,13 +91,13 @@
     }
     
     <div class="toast-container position-fixed bottom-0 end-0 p-3">
-        <div id="liveToast" class="toast" role="alert" aria-live="assertive" aria-atomic="true">
-            <div class="toast-header">
+        <div id="liveToast" class="toast bg-dark bg-gradient" role="alert" aria-live="assertive" aria-atomic="true">
+            <div class="toast-header bg-transparent text-white">
                 <img src="favicon.ico" class="rounded me-2" alt="...">
                 <strong class="me-auto" id="toast-operation">Deleted</strong>
                 <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
             </div>
-            <div class="toast-body">
+            <div class="toast-body bg-transparent text-white">
                 <span style="color: #eb4155; font-weight: bold" x-text="gameTitle"></span> <span id="toast-operation-text">was removed from the database.</span>
             </div>
         </div>

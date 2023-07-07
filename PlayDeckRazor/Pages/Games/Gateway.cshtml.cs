@@ -66,16 +66,15 @@ public class GatewayModel : PageModel
                     throw;
                 }
             }
-            ViewData["GameCard"] = Game;
-            var model = new IndexModel(_context);
-            var test = new ViewDataDictionary(new Microsoft.AspNetCore.Mvc.ModelBinding.EmptyModelMetadataProvider(),
-                new Microsoft.AspNetCore.Mvc.ModelBinding.ModelStateDictionary()) { { "IndexModel", model } };
-            test.Model = model;
-            test["GameCard"] = Game;
+            IndexModel newPartialModel = new IndexModel(_context);
+            ViewDataDictionary newViewData = new ViewDataDictionary(new Microsoft.AspNetCore.Mvc.ModelBinding.EmptyModelMetadataProvider(),
+                new Microsoft.AspNetCore.Mvc.ModelBinding.ModelStateDictionary()) { { "IndexModel", newPartialModel } };
+            newViewData.Model = newPartialModel;
+            newViewData["GameCard"] = Game;
             return new PartialViewResult()
             {
                 ViewName = "_GameCard",
-                ViewData = test,
+                ViewData = newViewData,
             };
         }
         return new BadRequestResult();
