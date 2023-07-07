@@ -3,3 +3,5 @@ obj/
 /packages/
 riderModule.iml
 /_ReSharper.Caches/
+PlayDeckRazor/App_Data/PlayDeckDB.mdf
+PlayDeckRazor/App_Data/PlayDeckDB_log.ldf

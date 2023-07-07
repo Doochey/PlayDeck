@@ -4,37 +4,35 @@
 
 <div id="modal-edit-data">
     <div class="d-flex flex-column justify-content-center" style="max-width: 60vw;">
-        <form x-on:submit.prevent="{}" id="modal-edit-form" method="post" class="form-panel d-flex flex-column form-control-lg justify-content-center" style="gap: 0.7vw; max-width: 60vw;">
-            <h1 class="mb-3" x-text="gameTitle"></h1>
-            
+        <form x-on:submit.prevent="{}" id="edit-modal-form" method="post" class="form-panel d-flex flex-column form-control-lg justify-content-center" style="gap: 0.7vw; max-width: 60vw;">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <input type="hidden" asp-for="Game.ID" x-text="gameId"/>
+            <input type="hidden" asp-for="Game.ID" x-model="gameId"/>
             <div class="d-flex">
                 <div class="input-group" style="margin-right: 0.5vw;">
                     <label asp-for="Game.Title" class="input-group-text" style="font-weight: bold"></label>
-                    <input asp-for="Game.Title" class="form-control" x-text="gameTitle"/>
+                    <input asp-for="Game.Title" class="form-control" x-bind:value="gameTitle"/>
                 </div>
                 <div class="input-group">
                     <label asp-for="Game.DeckID" class="input-group-text" style="font-weight: bold">Select Deck</label>
-                    <select asp-for="Game.DeckID" asp-items="@Model.Decks" class="form-select form-select-lg"></select>
+                    <select asp-for="Game.DeckID" asp-items="@Model.Decks" class="form-select form-select-lg" x-bind:value="deckId"></select>
                 </div>
             </div>
             <div class="input-group">
                 <label asp-for="Game.ImageURL" class="input-group-text" style="font-weight: bold"></label>
-                <input asp-for="Game.ImageURL" class="form-control" x-text="imageUrl"/>
+                <input asp-for="Game.ImageURL" class="form-control" x-bind:value="imageUrl"/>
             </div>
             <div class="d-flex" style="gap: 0.5vw;">
                 <div class="input-group">
                     <label asp-for="Game.PlayStatus" class="input-group-text" style="font-weight: bold">Play Status</label>
-                    <select asp-for="Game.PlayStatus" asp-items="@Model.Statuses" class="form-select form-select-lg"></select>
+                    <select asp-for="Game.PlayStatus" asp-items="@Model.Statuses" class="form-select form-select-lg" x-bind:value="playStatus"></select>
                 </div>
                 <div class="input-group">
                     <label asp-for="Game.StartDate" class="input-group-text" style="font-weight: bold"></label>
-                    <input asp-for="Game.StartDate" class="form-control" x-text="startDate"/>
+                    <input asp-for="Game.StartDate" class="form-control" x-bind:value="startDate"/>
                 </div>
                 <div class="input-group">
                     <label asp-for="Game.CompleteDate" class="input-group-text" style="font-weight: bold"></label>
-                    <input asp-for="Game.CompleteDate" class="form-control" x-text="completeDate"/>
+                    <input asp-for="Game.CompleteDate" class="form-control" x-bind:value="completeDate"/>
                 </div>
             </div>
             <div class="input-group">
@@ -45,18 +43,18 @@
                         <span style="margin-left: auto">/10</span>
                     </div>
                 </div>
-                <input type="range" min="0" max="10" asp-for="Game.Rating" class="form-range" id="game-rating"
+                <input x-bind:value="rating" type="range" min="0" max="10" asp-for="Game.Rating" class="form-range" id="game-rating"
                        onchange="document.getElementById('rating-label').innerHTML = document.getElementById('game-rating').value;"/>
             </div>
             <div class="d-flex" style="gap: 0.5vw;">
                 <div class="input-group">
                     <label asp-for="Game.PlayTime" class="input-group-text" style="font-weight: bold"></label>
-                    <input asp-for="Game.PlayTime" type="number" min="0" max="100000" step="0.5" class="form-control" x-text="playTime"/>
+                    <input x-bind:value="playTime" asp-for="Game.PlayTime" type="number" min="0" max="100000" step="0.5" class="form-control"/>
                     <span class="input-group-text" style="font-weight: bold">Hours</span>
                 </div>
                 <div class="input-group">
                     <label asp-for="Game.LastPlayed" class="input-group-text" style="font-weight: bold"></label>
-                    <input asp-for="Game.LastPlayed" class="form-control" x-text="lastPlayed"/>
+                    <input asp-for="Game.LastPlayed" class="form-control" x-bind:value="lastPlayed"/>
                 </div>
             </div>
             <div class="validation-errors d-flex flex-column">
@@ -69,9 +67,6 @@
                 <span asp-validation-for="Game.Rating" class="text-danger"></span>
                 <span asp-validation-for="Game.PlayTime" class="text-danger"></span>
                 <span asp-validation-for="Game.LastPlayed" class="text-danger"></span>
-            </div>
-            <div class="submit-button-container d-flex">
-                <input x-on:submit.prevent="{}" type="submit" value="Save" class="btn btn-primary submit-button" style="margin-left: auto" title="Save changes"/>
             </div>
         </form>
     </div>

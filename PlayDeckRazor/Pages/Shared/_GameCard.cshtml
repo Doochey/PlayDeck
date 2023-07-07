@@ -29,12 +29,12 @@
                         }
                     }
                 </a>
-                <a class="delete-game-container" title="Delete" data-bs-toggle="modal" data-bs-target="#delete-modal" x-on:click="setInfo(@g.ID, '@g.Title')">
+                <a class="delete-game-container" title="Delete" data-bs-toggle="modal" data-bs-target="#delete-modal" x-on:click="setInfo(@g.ID, '@g.Title'); mode = 'delete'" >
                     <div class="delete-game-button d-inline-flex justify-content-center">
                         <p style="margin: 0">X</p>
                     </div>
                 </a>
-                <a data-bs-toggle="modal" data-bs-target="#delete-modal" class="edit-game-container" title="Edit" x-on:click="GetGameDetails(@g.ID, $data)">
+                <a data-bs-toggle="modal" data-bs-target="#delete-modal" class="edit-game-container" title="Edit" x-on:click="GetGameDetails(@g.ID); mode = 'edit'">
                     <div class="edit-game-button d-inline-flex justify-content-center">
                         <p class="bi bi-pencil" style="margin: 0"></p>
                     </div>
