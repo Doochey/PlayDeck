@@ -27,13 +27,13 @@
                             </form>
                         </div>
                         <div class="hide-button-container" style="margin-left: 0.5vw">
-                            <button x-on:click="expanded = ! expanded; expanded ? showHide = 'Hide' : showHide = 'Show'" x-text="showHide" class="btn btn-outline-primary"></button>
+                            <button x-on:click="expanded = ! expanded; expanded ? showHide = 'Hide' : showHide = 'Show'" x-text="showHide" class="btn btn-primary hide-button"></button>
                         </div>
                     }
                     else
                     {
                         <div class="hide-button-container">
-                            <button x-on:click="expanded = ! expanded; expanded ? showHide = 'Hide' : showHide = 'Show'" x-text="showHide" class="btn btn-outline-primary"></button>
+                            <button x-on:click="expanded = ! expanded; expanded ? showHide = 'Hide' : showHide = 'Show'" x-text="showHide" class="btn btn-primary hide-button"></button>
                         </div>
                     }
                     <div class="view-all-container">

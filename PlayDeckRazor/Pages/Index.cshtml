@@ -9,17 +9,17 @@
 
 <div x-data="$store.gameData">
     <div class="modal fade" id="delete-modal" tabindex="-1" role="dialog" aria-labelledby="delete-modal-title" aria-hidden="true">
-        <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
+        <div class="modal-dialog modal-xl modal-dialog-centered" role="document">
             <div class="modal-content">
                 <div class="modal-header">
                     <template x-if="mode === 'delete'">
                         <h2 class="modal-title" id="delete-modal-title">Warning!</h2>
                     </template>
                     <template x-if="mode === 'edit'">
-                        <h2 class="modal-title" id="delete-modal-title">Edit <span x-text="gameTitle"></span></h2>
+                        <h2 class="modal-title" id="delete-modal-title">Edit: <span x-text="gameTitle"></span></h2>
                     </template>
                     <template x-if="mode === 'add'">
-                        <h2 class="modal-title" id="delete-modal-title">Add a new game</h2>
+                        <h2 class="modal-title" id="delete-modal-title">Add a New Game</h2>
                     </template>
                 </div>
                 <div class="modal-body">
