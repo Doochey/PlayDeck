@@ -59,7 +59,7 @@ function ShowToast(operation, text) {
 }
 
 async function SendDelete() {
-    await fetch('https://localhost:6610/index?handler=delete', {
+    await fetch('https://localhost:6610/Games/Gateway/delete/', {
         method: 'POST',
         body: new FormData(document.querySelector('#delete-modal-form'))})
         .then(response => response.text())
@@ -76,10 +76,13 @@ async function SendEdit(id) {
         body: new FormData(document.querySelector('#edit-modal-form'))})
         .then(response => response.text())
         .then(data => {
+            document.querySelector('#game-card-' + id).remove();
             newCard = document.createElement('div');
             newCard.innerHTML = data;
-            oldCard =  document.querySelector('#game-card-' + id);
-            oldCard.parentNode.replaceChild(newCard, oldCard);
+            newCard = newCard.getElementsByTagName('li')[0];
+            const targetDisplay = newCard.getAttribute('targetDeckDisplay');
+            deckCardsDisplay =  document.querySelector("ul[deckDisplay=" + CSS.escape(targetDisplay) + "]");
+            deckCardsDisplay ? deckCardsDisplay.prepend(newCard) : null;
             ShowToast('Edit', 'was modified.');
         })
         .catch(errorMsg => { console.log(errorMsg); });

@@ -22,9 +22,18 @@ html {
   color: #34a7dc;
 }
 
+header {
+  background-color: #141414;
+}
+
+footer {
+  background-color: #141414;
+}
+
 body {
   margin-bottom: 5.3vw;
   background-color: #141414;
+  background-image: url("../Resources/Background.png");
   color: whitesmoke;
   font-family: "Open Sans", "Segoe UI",sans-serif;
 }
@@ -59,7 +68,6 @@ h1 {
 .deck-display-container {
   margin: 1vw;
   max-width: 75vw;
-  height: auto;
 }
 
 .deck-display {
@@ -92,9 +100,14 @@ h1 {
   margin-left: auto;
 }
 
+.hide-button-container {
+  margin-left: auto;
+  margin-right: 0.5vw;
+  padding-top: 0.7vw;
+}
+
 .view-all-container {
   padding-top: 1vw;
-  margin-left: auto;
 }
 
 .view-all-button {

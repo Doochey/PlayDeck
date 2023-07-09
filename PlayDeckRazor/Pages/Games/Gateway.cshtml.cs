@@ -17,6 +17,12 @@ public class GatewayModel : PageModel
     
     [BindProperty(SupportsGet = true)]
     public int? DeckID { get; set; }
+    
+    /// <summary>
+    /// id for game to be deleted, submitted by post from _GameCard delete button
+    /// </summary>
+    [BindProperty]
+    public int? GameDeleteId { get; set; }
 
     public GatewayModel(PlayDeckRazorContext context)
     {
@@ -108,6 +114,26 @@ public class GatewayModel : PageModel
     private bool GameExists(int id)
     {
         return (_context.Game?.Any(e => e.ID == id)).GetValueOrDefault();
+    }
+    
+    public async Task<IActionResult> OnPostDeleteAsync()
+    {
+        
+        if (GameDeleteId != null)
+        {
+            // Ensure game exists and delete
+            var game = await _context.Game.FindAsync(GameDeleteId);
+            if (game != null)
+            {
+                _context.Remove(game);
+                await _context.SaveChangesAsync();
+                return new OkObjectResult(GameDeleteId);
+            }
+            
+            return new NotFoundResult();
+            
+        }
+        return new BadRequestResult();
     }
     
         

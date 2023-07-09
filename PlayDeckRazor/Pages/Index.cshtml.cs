@@ -14,21 +14,18 @@ public class IndexModel : PageModel
     /// 3 -> 10 for user allocation
     /// </summary>
     public List<Deck> Decks = new List<Deck>(10);
-    
+
     public List<Game>? FilteredList { get; set; }
+    
+    [BindProperty]
+    public int? GameDeleteId { get; set; }
     
     /* Not Implemented yet
     public SelectList? Platform { get; set; }
     [BindProperty(SupportsGet = true)]
     public string? PlatformSearch { get; set; }
     */
-    
-    /// <summary>
-    /// id for game to be deleted, submitted by post from _GameCard delete button
-    /// </summary>
-    [BindProperty]
-    public int? GameDeleteId { get; set; }
-    
+
     public IndexModel(PlayDeckRazorContext context)
     {
         _context = context;
@@ -52,41 +49,5 @@ public class IndexModel : PageModel
             Decks[g.DeckID].GameList.Add(g);
         }
     }
-
-    public async Task<IActionResult> OnPostAsync()
-    {
-        /*
-        if (GameDeleteId != null)
-        {
-            // Ensure game exists and delete
-            var game = await _context.Game.FindAsync(GameDeleteId);
-            if (game != null)
-            {
-                _context.Remove(game);
-                await _context.SaveChangesAsync();
-            }
-        }
-        */
-        return RedirectToPage("./Index");
-    }
-
-    public async Task<IActionResult> OnPostDeleteAsync()
-    {
-        
-        if (GameDeleteId != null)
-        {
-            // Ensure game exists and delete
-            var game = await _context.Game.FindAsync(GameDeleteId);
-            if (game != null)
-            {
-                _context.Remove(game);
-                await _context.SaveChangesAsync();
-                return new OkObjectResult(GameDeleteId);
-            }
-            
-            return new NotFoundResult();
-            
-        }
-        return new BadRequestResult();
-    }
+    
 }

@@ -1,5 +1,7 @@
 ﻿@page "{id:int}/{title}/{CollectionSearch?}"
 @using PlayDeckRazor.Model
+@using PlayDeckRazor.Pages.Shared
+@using Microsoft.AspNetCore.Mvc.TagHelpers
 @model ViewModel
 
 @{
@@ -7,42 +9,70 @@
 }
 
 @* Displays a single deck and all games in it, with search, different than _DeckDisplay partial *@
-<div x-data="{
-            gameTitle: '', 
-            gameId: '', 
-            setInfo(id, title) {this.gameId = id; this.gameTitle=title;}
-            }">
+<div x-data="$store.gameData">
     <div class="modal fade" id="delete-modal" tabindex="-1" role="dialog" aria-labelledby="delete-modal-title" aria-hidden="true">
-            <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h2 class="modal-title" id="delete-modal-title">Warning!</h2>
+                        <template x-if="mode === 'delete'">
+                            <h2 class="modal-title" id="delete-modal-title">Warning!</h2>
+                        </template>
+                        <template x-if="mode === 'edit'">
+                            <h2 class="modal-title" id="delete-modal-title">Edit <span x-text="gameTitle"></span></h2>
+                        </template>
+                        <template x-if="mode === 'add'">
+                            <h2 class="modal-title" id="delete-modal-title">Add a new game</h2>
+                        </template>
                     </div>
                     <div class="modal-body">
-                        <p>
-                            Are you sure you want to remove <span style="color: #eb4155; font-weight: bold" x-text="gameTitle"></span> from your collection? If you want to change which deck
-                            the game belongs to, use the edit button.
-                        </p>
+                        <template x-if="mode === 'delete'">
+                            <p>
+                                Are you sure you want to remove <span style="color: #eb4155; font-weight: bold" x-text="gameTitle"></span> from your collection? If you want to change which deck
+                                the game belongs to, use the edit button.
+                            </p>
+                        </template>
+                        <template x-if="mode === 'edit'">
+                            @{
+                                await Html.RenderPartialAsync("_ModalGameDetails", new _ModalGameDetailsModel(Model._context));
+                            }
+                        </template>
+                        <template x-if="mode === 'add'">
+                            @{
+                                await Html.RenderPartialAsync("_ModalGameDetails", new _ModalGameDetailsModel(Model._context));
+                            }
+                        </template>
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" title="Cancel">Cancel</button>
-                        <form x-on:submit.prevent="SendDelete()" method="post" id="delete-modal-form" asp-page-handler="delete">
-                            <input type="hidden" asp-for="GameDeleteId" x-model="gameId"/>
-                            <input x-on:submit.prevent="{}" type="submit" value="I'm Sure" class="btn btn-danger" title="Delete game" data-bs-toggle="modal" data-bs-target="#delete-modal"/>
-                        </form>
+                        <template x-if="mode === 'delete'">
+                            <form x-on:submit.prevent="SendDelete()" method="post" id="delete-modal-form" asp-page-handler="delete">
+                                <input type="hidden" asp-for="GameDeleteId" x-model="gameId"/>
+                                <input x-on:submit.prevent="{}" type="submit" value="I'm Sure" class="btn btn-danger" title="Delete game" data-bs-toggle="modal" data-bs-target="#delete-modal"/>
+                            </form>
+                        </template>
+                        <template x-if="mode === 'edit'">
+                            <form x-on:submit.prevent="SendEdit(gameId)" method="post" id="edit-modal-button-form" asp-page-handler="edit">
+                                <input x-on:submit.prevent="{}" type="submit" value="Save" class="btn btn-primary submit-button" style="margin-left: auto" title="Save changes" data-bs-toggle="modal" data-bs-target="#delete-modal"/>
+                            </form>
+                        </template>
+                        <template x-if="mode === 'add'">
+                            <form x-on:submit.prevent="SendAdd(deckTitle)" method="post" id="add-modal-button-form" asp-page-handler="add">
+                                <input x-on:submit.prevent="{}" type="submit" value="Create" class="btn btn-primary submit-button" title="Add new game" data-bs-toggle="modal" data-bs-target="#delete-modal"/>
+                            </form>
+                        </template>
                     </div>
                 </div>
             </div>
         </div>
 
-    <div x-data="{ search: ''}" id="@Model.Deck.Title-container" class="deck-display-container d-flex flex-column justify-content-center">
+    <div x-data="{ search: '', expanded: true}" id="@Model.Deck.Title-container" class="deck-display-container d-flex flex-column justify-content-center">
         <div id="@Model.Deck.Title-header" class="deck-header d-flex">
             <div id="@Model.Deck.Title-title" class="deck-title">
                 <h1>@Model.Deck.Title</h1>
             </div>
-            <div class="add-game-button-container">
-                <a class="add-game-button btn btn-primary" asp-page="/Games/Edit" asp-route-DeckID="@Model.Deck.ID" role="button">+</a>
-            </div>
+                <div class="add-game-button-container">
+                    <a class="add-game-button btn btn-primary" data-bs-toggle="modal" data-bs-target="#delete-modal" x-on:click="ResetGameDetails(); mode = 'add'; deckId = @Model.Deck.ID; @Model.Deck.ID == 2 ? playStatus = 1 : playStatus = 0; deckTitle = '@Model.Deck.Title'" role="button" title="Add new card to deck">+</a>
+                </div>
             <div class="deck-search ">
                 <form x-on:submit.prevent="{}">
                     <p>
@@ -52,7 +82,7 @@
             </div>
         </div>
         <div id="@Model.Deck.Title-display pull-left" class="deck-display d-flex justify-content-center">
-            <ul id="@Model.Deck.Title-cards" class="deck d-flex flex-wrap">
+            <ul id="@Model.Deck.Title-cards" class="deck d-flex flex-wrap" deckDisplay="@Model.Deck.ID">
                 @{
                 @* GameCard requires IndexModel *@
                     var m = new IndexModel(Model._context);
@@ -64,6 +94,19 @@
                     } 
                 }
             </ul>
+        </div>
+    </div>
+    
+    <div class="toast-container position-fixed bottom-0 end-0 p-3" style="z-index: 1">
+        <div id="liveToast" class="toast bg-dark bg-gradient" role="alert" aria-live="assertive" aria-atomic="true">
+            <div class="toast-header bg-transparent text-white">
+                <img src="/favicon.ico" class="rounded me-2" alt="...">
+                <strong class="me-auto" id="toast-operation">Deleted</strong>
+                <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+            </div>
+            <div class="toast-body bg-transparent text-white">
+                <span style="color: #eb4155; font-weight: bold" x-text="gameTitle"></span> <span id="toast-operation-text">was removed from the database.</span>
+            </div>
         </div>
     </div>
 
