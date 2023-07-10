@@ -88,7 +88,7 @@ public class GatewayModel : PageModel
 
     public async Task<IActionResult> OnPostAddAsync()
     {
-        if (!ModelState.IsValid && !GameExists(Game.ID))
+        if (ModelState.IsValid && !GameExists(Game.ID))
         {
             _context.Game.Add(Game);
             await _context.SaveChangesAsync();

@@ -6,11 +6,13 @@
     <div class="d-flex flex-column justify-content-center" style="max-width: 60vw;">
         <form x-on:submit.prevent="{}" id="edit-modal-form" method="post" class="form-panel d-flex flex-column form-control-lg justify-content-center" style="gap: 0.7vw; max-width: 60vw;">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <input type="hidden" asp-for="Game.ID" x-model="gameId"/>
+            <template x-if="mode === 'edit'">
+                <input type="hidden" asp-for="Game.ID" x-bind:value="gameId"/>
+            </template>
             <div class="d-flex">
                 <div class="input-group" style="margin-right: 0.5vw;">
                     <label asp-for="Game.Title" class="input-group-text" style="font-weight: bold"></label>
-                    <input asp-for="Game.Title" class="form-control" x-bind:value="gameTitle"/>
+                    <input id="test" asp-for="Game.Title" class="form-control" x-bind:value="gameTitle"/>
                 </div>
                 <div class="input-group">
                     <label asp-for="Game.DeckID" class="input-group-text" style="font-weight: bold">Select Deck</label>
@@ -72,6 +74,4 @@
     </div>
 </div>
 
-@section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
-}
+<script>addValidation()</script>

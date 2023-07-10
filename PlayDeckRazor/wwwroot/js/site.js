@@ -12,7 +12,7 @@ document.addEventListener('alpine:init', () => {
         rating: '',
         playTime: '',
         lastPlayed: '',
-        mode: '',
+        mode: 'add',
         deckTitle: '',
 
         setInfo(id, title) {this.gameId = id; this.gameTitle=title;},
@@ -101,6 +101,28 @@ async function SendAdd(deckTitle) {
             ShowToast('Add', 'was added to ' + deckTitle + ' deck.');
         })
         .catch(errorMsg => { console.log(errorMsg); });
+    
+}
+
+function checkValid(el) {
+    jQuery.validator.setDefaults({
+        debug: true,
+        success: "valid"
+    });
+    let form = $( "#edit-modal-form" );
+    form.validate()
+    if (form.valid()) {
+        bootstrap.Modal.getInstance($('#delete-modal')).toggle();
+    }
+    return form.valid();
+}
+
+function addValidation() {
+    let form = $( "#edit-modal-form" );
+    if (!form.data("validator")) {
+        form.removeData("validator").removeData("unobtrusiveValidation");
+        $.validator.unobtrusive.parse($("form"));
+    }
 }
 
 
