@@ -306,6 +306,30 @@ h1 {
   background-image: linear-gradient(135deg, goldenrod, darkgoldenrod);
 }
 
+.heart-display-container {
+  visibility: hidden;
+  position: absolute;
+  bottom: 15%;
+  right: 2%;
+  font-weight: bold;
+  font-size: large;
+  padding: 0.3vw 0.6vw;
+  border-radius: 10%;
+  background-color: rgba(6,3,3,0.45);
+}
+
+.heart-checked {
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-image: linear-gradient(135deg, firebrick, darkred);
+}
+
+.heart-unchecked {
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-image: linear-gradient(135deg, firebrick, darkred);
+}
+
 .game-card:hover .delete-game-container {
   visibility: visible;
 }

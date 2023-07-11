@@ -24,6 +24,9 @@ public class GatewayModel : PageModel
     public int? RatingChange { get; set; }
     [BindProperty]
     public int? GameID { get; set; }
+    
+    [BindProperty]
+    public bool ToggleFavourite { get; set; }
 
     /// <summary>
     /// id for game to be deleted, submitted by post from _GameCard delete button
@@ -232,6 +235,40 @@ public class GatewayModel : PageModel
         {
             return new BadRequestResult();
         }
+        
+        _context.Attach(Game).State = EntityState.Modified;
+        
+        await _context.SaveChangesAsync();
+
+        GameViewModel newPartialModel = new GameViewModel(_context);
+        ViewDataDictionary newViewData = new ViewDataDictionary(new Microsoft.AspNetCore.Mvc.ModelBinding.EmptyModelMetadataProvider(),
+            new Microsoft.AspNetCore.Mvc.ModelBinding.ModelStateDictionary()) { { "GameViewModel", newPartialModel } };
+        newViewData.Model = newPartialModel;
+        newViewData["GameView"] = Game;
+        return new PartialViewResult()
+        {
+            ViewName = "_GameInfoPanel",
+            ViewData = newViewData,
+        };
+    }
+    
+    public async Task<IActionResult> OnPostToggleFavGameViewAsync()
+    {
+        Game = await _context.Game.FindAsync(GameID);
+        if (Game == null)
+        {
+            return new NotFoundResult();
+        }
+
+        if (ToggleFavourite)
+        {
+            Game.Favourite = !Game.Favourite;  
+        }
+        else
+        {
+            return new BadRequestResult();
+        }
+        
         
         _context.Attach(Game).State = EntityState.Modified;
         

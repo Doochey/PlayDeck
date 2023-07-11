@@ -151,6 +151,24 @@ function addValidation() {
     }
 }
 
+async function toggleFavGameView(gameID) {
+    await fetch('https://localhost:6610/Games/Gateway/togglefavgameview/', {
+        method: 'POST',
+        body: new FormData(document.querySelector('#fav-change-form'))})
+        .then(response => response.text())
+        .then(data => {
+            document.querySelector('#info-panel').remove();
+            newPanel = document.createElement('div');
+            newPanel.innerHTML = data;
+            newPanel = newPanel.getElementsByTagName('div')[0];
+            display =  document.querySelector("#game-info-container");
+            display ? display.prepend(newPanel) : null;
+            ShowToast('Edit', 'was modified.');
+            GetGameDetails(gameID);
+        })
+        .catch(errorMsg => { console.log(errorMsg); });
+}
+
 
 
 

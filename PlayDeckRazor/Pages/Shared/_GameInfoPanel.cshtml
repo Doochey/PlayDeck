@@ -8,7 +8,37 @@
     {
         <div id="info-panel" class="game-info d-flex flex-column">
             <div class="game-info-header d-flex">
+                <div style="margin-top: 1vw; margin-right: 1vw">
+                    @{
+                        if (g.Favourite)
+                        {
+                            <form id="fav-change-form" method="post" x-on:submit.prevent="toggleFavGameView(@g.ID)" asp-page-handler="togglefavgameview">
+                                <input asp-for="GameID" class="form-control" value="@g.ID" type="hidden"/>
+                                <input asp-for="ToggleFavourite" class="form-control" value="true" type="hidden"/>
+                                <button class="heart-button bi bi-heart-fill heart-checked"
+                                        type="submit"
+                                        x-on:submit.prevent="{}"
+                                        title="Toggle favourite">
+                                </button>
+                            </form>
+                        }
+                        else
+                        {
+                            <form id="fav-change-form" method="post" x-on:submit.prevent="toggleFavGameView(@g.ID)" asp-page-handler="togglefavgameview">
+                                <input asp-for="GameID" class="form-control" value="@g.ID" type="hidden"/>
+                                <input asp-for="ToggleFavourite" class="form-control" value="true" type="hidden"/>
+                                <button class="heart-button bi bi-heart heart-unchecked"
+                                        type="submit"
+                                        x-on:submit.prevent="{}"
+                                        title="Toggle favourite">
+                                </button>
+                            </form>
+                        }
+                    }
+                </div>
                 <h1>@g.Title</h1>
+
+
             </div>
             @{
                @* Star Rating Display *@

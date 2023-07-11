@@ -26,6 +26,8 @@ public class GameViewModel : PageModel
     [BindProperty]
     public int? GameDeleteID { get; set; }
     
+    public bool ToggleFavourite { get; set; }
+    
     [StringLength(50, MinimumLength = 1), Display(Name = "Title")]
     [BindProperty]
     public string? TitleChange { get; set; }
