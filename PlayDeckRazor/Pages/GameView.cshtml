@@ -61,13 +61,13 @@
             @{
                 
                 
-                <template x-if="imageUrl || '@Model.Game?.ImageURL'">
-                    <img class="game-cover-image" x-bind:src="imageUrl ? imageUrl : '@Model.Game?.ImageURL'" x-bind:alt="gameTitle ? gameTitle  + ' video-game cover' : '@Model.Game?.Title' + ' video-game cover'">
+                <template x-if="imageUrl || `@Model.Game?.ImageURL`">
+                    <img class="game-cover-image" x-bind:src="imageUrl ? imageUrl : `@Model.Game?.ImageURL`" x-bind:alt="gameTitle ? gameTitle  + ' video-game cover' : `@Model.Game?.Title` + ' video-game cover'">
                 </template>
-                <template x-if="!imageUrl && !'@Model.Game?.ImageURL'">
+                <template x-if="!imageUrl && !`@Model.Game?.ImageURL`">
                     <div class="placeholder-container">
-                        <img class="game-cover-image" src="/Resources/Cover Placeholder.png" x-bind:alt="gameTitle ? gameTitle  + ' video-game cover' : '@Model.Game?.Title' + ' video-game cover'">
-                        <p class="placeholder-text" x-text="gameTitle ? gameTitle : '@Model.Game?.Title'"></p>
+                        <img class="game-cover-image" src="/Resources/Cover Placeholder.png" x-bind:alt="gameTitle ? gameTitle  + ' video-game cover' : `@Model.Game?.Title` + ' video-game cover'">
+                        <p class="placeholder-text" x-text="gameTitle ? gameTitle : `@Model.Game?.Title`"></p>
                     </div>
                 </template>
             }

@@ -6,7 +6,7 @@
 @{
     if (ViewData["GameCard"] is Game g)
     {
-        <li x-data="{title: '@g.Title'}" x-show="title.toLowerCase().trim().includes(search.toLowerCase().trim()) && expanded" id="game-card-@g.ID" targetDeckDisplay="@g.DeckID">
+        <li x-data="{title: `@g.Title`}" x-show="title.toLowerCase().trim().includes(search.toLowerCase().trim()) && expanded" id="game-card-@g.ID" targetDeckDisplay="@g.DeckID">
             
             <div class="game-card card">
                 <a asp-page="/GameView" asp-route-id="@g.ID">
@@ -27,7 +27,7 @@
                         }
                     }
                 </a>
-                <a class="delete-game-container" title="Delete" data-bs-toggle="modal" data-bs-target="#delete-modal" x-on:click="setInfo(@g.ID, '@g.Title'); mode = 'delete'" >
+                <a class="delete-game-container" title="Delete" data-bs-toggle="modal" data-bs-target="#delete-modal" x-on:click="setInfo(@g.ID, `@g.Title`); mode = 'delete'" >
                     <div class="delete-game-button d-inline-flex justify-content-center">
                         <p style="margin: 0">X</p>
                     </div>

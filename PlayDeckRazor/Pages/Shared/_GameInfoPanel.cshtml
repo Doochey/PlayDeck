@@ -175,7 +175,7 @@
                             }
                         }
                        
-                        <button class="delete-button btn" type="button" data-bs-toggle="modal" data-bs-target="#delete-modal" title="Delete game" x-on:click="setInfo(@g.ID, '@g.Title'); mode = 'delete'">Delete</button>
+                        <button class="delete-button btn" type="button" data-bs-toggle="modal" data-bs-target="#delete-modal" title="Delete game" x-on:click="setInfo(@g.ID, `@g.Title`); mode = 'delete'">Delete</button>
                     </div>
                 </div>
             }
