@@ -1,4 +1,5 @@
 ﻿@page "{id:int}"
+@using PlayDeckRazor.Pages.Shared
 @model PlayDeckRazor.Pages.GameViewModel
 
 @{
@@ -7,80 +8,91 @@
 
 @* Page for displaying single game details *@
 
-<div class="modal fade" id="delete-modal-@Model.Game?.ID" tabindex="-1" role="dialog" aria-labelledby="delete-modal-title" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h2 class="modal-title" id="delete-modal-title-@Model.Game?.ID">Warning!</h2>
-            </div>
-            <div class="modal-body">
-                <p>
-                    Are you sure you want to remove <span style="color: #eb4155; font-weight: bold">@Model.Game?.Title</span> from your collection? If you want to change which deck
-                    the game belongs to, use the edit button.
-                </p>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" title="Cancel">Cancel</button>
-                <form method="post">
-                    <input type="hidden" asp-for="GameDeleteID" value="@Model.Game?.ID" />
-                    <input type="submit" value="I'm Sure" class="btn btn-danger" title="Delete game"/>
-                </form>
-            </div>
-        </div>
-    </div>
-</div>
-
-<div class="modal fade" id="edit-title-modal" tabindex="-1" role="dialog" aria-labelledby="delete-modal-title" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h2 class="modal-title" id="edit-modal-title-@Model.Game?.ID">Edit Title</h2>
-            </div>
-            <form method="post">
+<div x-data="$store.gameData">
+    <div class="modal fade" id="delete-modal" tabindex="-1" role="dialog" aria-labelledby="delete-modal-title" aria-hidden="true">
+        <div class="modal-dialog modal-xl modal-dialog-centered" role="document">
+            <div class="modal-content" x-on:click="addValidation()">
+                <div class="modal-header">
+                    <template x-if="mode === 'delete'">
+                        <h2 class="modal-title" id="delete-modal-title">Warning!</h2>
+                    </template>
+                    <template x-if="mode === 'edit'">
+                        <h2 class="modal-title" id="delete-modal-title">Edit: <span x-text="gameTitle"></span></h2>
+                    </template>
+                </div>
                 <div class="modal-body">
-                    <p>
-                        Enter new title for <span style="color: #eb4155; font-weight: bold">@Model.Game?.Title</span>
-                    </p>
-                    <div class="form-group">
-                        <input asp-for="TitleChange" class="form-control" value="@Model.Game?.Title"/>
-                        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-                        <span asp-validation-for="TitleChange" class="text-danger"></span>
-                    </div>
+                    <template x-if="mode === 'delete'">
+                        <p>
+                            Are you sure you want to remove <span style="color: #eb4155; font-weight: bold" x-text="gameTitle"></span> from your collection? If you want to change which deck
+                            the game belongs to, use the edit button.
+                        </p>
+                    </template>
+                    <template x-if="mode === 'edit'">
+                        @{
+                            await Html.RenderPartialAsync("_ModalGameDetails", new _ModalGameDetailsModel(Model._context));
+                        }
+                    </template>
+                    <template x-if="mode === 'add'">
+                        @{
+                            await Html.RenderPartialAsync("_ModalGameDetails", new _ModalGameDetailsModel(Model._context));
+                        }
+                    </template>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" title="Cancel">Cancel</button>
-                    <input type="hidden" asp-for="GameID" value="@Model.Game?.ID" />
-                    <input type="submit" value="Submit" class="btn btn-primary" title="Save name change" style="padding: 0.3rem 0.75rem; margin-top: 0.3rem"/>
+                    <template x-if="mode === 'delete'">
+                        <form x-on:submit.prevent="SendDelete(true)" method="post" id="delete-modal-form" asp-page-handler="delete">
+                            <input type="hidden" asp-for="@Model.GameDeleteID" x-model="gameId"/>
+                            <input x-on:submit.prevent="{}" type="submit" value="I'm Sure" class="btn btn-danger" title="Delete game" data-bs-toggle="modal" data-bs-target="#delete-modal"/>
+                        </form>
+                    </template>
+                    <template x-if="mode === 'edit'">
+                        <form x-on:submit.prevent="checkValid($refs.editSubmit) ? SendEditGameView(gameId) : {}" method="post" id="edit-modal-button-form" asp-page-handler="editgameview">
+                            <input x-ref="editSubmit" x-on:submit.prevent="{}" type="submit" value="Save" class="btn btn-primary submit-button" style="margin-left: auto" title="Save changes"/>
+                        </form>
+                    </template>
                 </div>
-            </form>
+            </div>
+        </div>
+    </div>
+    
+    <div class="d-flex" id="page-container" style="margin-top: 4vw">
+        <div x-data="{altText: ''}" class="game-cover-container">
+            @{
+                
+                
+                <template x-if="imageUrl || '@Model.Game?.ImageURL'">
+                    <img class="game-cover-image" x-bind:src="imageUrl ? imageUrl : '@Model.Game?.ImageURL'" x-bind:alt="gameTitle ? gameTitle  + ' video-game cover' : '@Model.Game?.Title' + ' video-game cover'">
+                </template>
+                <template x-if="!imageUrl && !'@Model.Game?.ImageURL'">
+                    <div class="placeholder-container">
+                        <img class="game-cover-image" src="/Resources/Cover Placeholder.png" x-bind:alt="gameTitle ? gameTitle  + ' video-game cover' : '@Model.Game?.Title' + ' video-game cover'">
+                        <p class="placeholder-text" x-text="gameTitle ? gameTitle : '@Model.Game?.Title'"></p>
+                    </div>
+                </template>
+            }
+        </div>
+        <div id="game-info-container" class="game-info-container">
+            @{ ViewData["GameView"] = Model.Game;}
+            @{await Html.RenderPartialAsync("_GameInfoPanel");}
+        </div>
+    </div>
+    
+    <div class="toast-container position-fixed bottom-0 end-0 p-3" style="z-index: 1">
+        <div id="liveToast" class="toast bg-dark bg-gradient" role="alert" aria-live="assertive" aria-atomic="true">
+            <div class="toast-header bg-transparent text-white">
+                <img src="/favicon.ico" class="rounded me-2" alt="...">
+                <strong class="me-auto" id="toast-operation">Deleted</strong>
+                <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+            </div>
+            <div class="toast-body bg-transparent text-white">
+                <span style="color: #eb4155; font-weight: bold" x-text="gameTitle"></span> <span id="toast-operation-text">was removed from the database.</span>
+            </div>
         </div>
     </div>
 </div>
 
-<div class="d-flex" id="page-container" style="margin-top: 4vw">
-    <div class="game-cover-container">
-        @{
-            // Form image alt text
-            string s = @Model.Game?.Title + " video-game cover";
 
-            if (string.IsNullOrEmpty(@Model.Game?.ImageURL))
-            {
-                <div class="placeholder-container">
-                    <img class="game-cover-image" src="/Resources/Cover Placeholder.png" alt="@s">
-                    <p class="placeholder-text">@Model.Game?.Title</p>
-                </div>
-            }
-            else
-            {
-                <img class="game-cover-image" src="@Model.Game?.ImageURL" alt="@s">
-            }
-        }
-    </div>
-    <div class="game-info-container">
-        @{ ViewData["GameView"] = Model.Game;}
-        @{await Html.RenderPartialAsync("_GameInfoPanel");}
-    </div>
-</div>
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}

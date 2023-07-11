@@ -6,10 +6,9 @@
 @{
     if (ViewData["GameView"] is Game g)
     {
-        <div class="game-info d-flex flex-column">
+        <div id="info-panel" class="game-info d-flex flex-column">
             <div class="game-info-header d-flex">
                 <h1>@g.Title</h1>
-                <p class="bi bi-pencil edit-title" data-bs-toggle="modal" data-bs-target="#edit-title-modal" title="Edit Title"></p>
             </div>
             @{
                @* Star Rating Display *@
@@ -126,7 +125,7 @@
                         }
                        
                        
-                        <a class="edit-details-button btn" href="/Games/Edit?id=@g.ID" title="Edit game details">Edit Details</a>
+                        <a class="edit-details-button btn" data-bs-toggle="modal" data-bs-target="#delete-modal" title="Edit game details" x-on:click="GetGameDetails(@g.ID); mode = 'edit'">Edit Details</a>
                     </div>
                    
                                
@@ -176,7 +175,7 @@
                             }
                         }
                        
-                        <button class="delete-button btn" type="button" data-bs-toggle="modal" data-bs-target="#delete-modal-@g.ID" title="Delete game">Delete</button>
+                        <button class="delete-button btn" type="button" data-bs-toggle="modal" data-bs-target="#delete-modal" title="Delete game" x-on:click="setInfo(@g.ID, '@g.Title'); mode = 'delete'">Delete</button>
                     </div>
                 </div>
             }

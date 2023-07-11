@@ -58,17 +58,22 @@ function ShowToast(operation, text) {
     toast.show()
 }
 
-async function SendDelete() {
+async function SendDelete(gameView) {
     await fetch('https://localhost:6610/Games/Gateway/delete/', {
         method: 'POST',
         body: new FormData(document.querySelector('#delete-modal-form'))})
         .then(response => response.text())
         .then(data => {
-            document.querySelector('#game-card-' + data).remove();
-            ShowToast('Deletion', 'was removed from the database.');
+            if (gameView) {
+                window.location.replace("https://localhost:6610/");
+            } else {
+                document.querySelector('#game-card-' + data).remove();
+                ShowToast('Deletion', 'was removed from the database.');  
+            }
         })
         .catch(errorMsg => { console.log(errorMsg); });
 }
+
 
 async function SendEdit(id) {
     await fetch('https://localhost:6610/Games/Gateway/edit/', {
@@ -84,6 +89,24 @@ async function SendEdit(id) {
             deckCardsDisplay =  document.querySelector("ul[deckDisplay=" + CSS.escape(targetDisplay) + "]");
             deckCardsDisplay ? deckCardsDisplay.prepend(newCard) : null;
             ShowToast('Edit', 'was modified.');
+        })
+        .catch(errorMsg => { console.log(errorMsg); });
+}
+
+async function SendEditGameView(id) {
+    await fetch('https://localhost:6610/Games/Gateway/editGameView/', {
+        method: 'POST',
+        body: new FormData(document.querySelector('#edit-modal-form'))})
+        .then(response => response.text())
+        .then(data => {
+            document.querySelector('#info-panel').remove();
+            newPanel = document.createElement('div');
+            newPanel.innerHTML = data;
+            newPanel = newPanel.getElementsByTagName('div')[0];
+            display =  document.querySelector("#game-info-container");
+            display ? display.prepend(newPanel) : null;
+            ShowToast('Edit', 'was modified.');
+            GetGameDetails(id);
         })
         .catch(errorMsg => { console.log(errorMsg); });
 }

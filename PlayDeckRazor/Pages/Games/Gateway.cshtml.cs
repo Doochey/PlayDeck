@@ -23,7 +23,7 @@ public class GatewayModel : PageModel
     /// </summary>
     [BindProperty]
     public int? GameDeleteId { get; set; }
-
+    
     public GatewayModel(PlayDeckRazorContext context)
     {
         _context = context;
@@ -80,6 +80,46 @@ public class GatewayModel : PageModel
             return new PartialViewResult()
             {
                 ViewName = "_GameCard",
+                ViewData = newViewData,
+            };
+        }
+        return new BadRequestResult();
+    }
+    
+    public async Task<IActionResult> OnPostEditGameViewAsync()
+    {
+        if (!ModelState.IsValid)
+        {
+            return new BadRequestResult();
+        }
+
+        if (GameExists(Game.ID))
+        {
+            _context.Attach(Game).State = EntityState.Modified;
+
+            try
+            {
+                await _context.SaveChangesAsync();
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                if (!GameExists(Game.ID))
+                {
+                    return new NotFoundResult();
+                }
+                else
+                {
+                    throw;
+                }
+            }
+            GameViewModel newPartialModel = new GameViewModel(_context);
+            ViewDataDictionary newViewData = new ViewDataDictionary(new Microsoft.AspNetCore.Mvc.ModelBinding.EmptyModelMetadataProvider(),
+                new Microsoft.AspNetCore.Mvc.ModelBinding.ModelStateDictionary()) { { "GameViewModel", newPartialModel } };
+            newViewData.Model = newPartialModel;
+            newViewData["GameView"] = Game;
+            return new PartialViewResult()
+            {
+                ViewName = "_GameInfoPanel",
                 ViewData = newViewData,
             };
         }

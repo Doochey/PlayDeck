@@ -6,8 +6,6 @@
 @{
     if (ViewData["GameCard"] is Game g)
     {
-        @* Add modal for each card to allow posting with respective id. Can be replaced with a single dynamic modal *@
-        @* using javascript but using as little custom js as possible was a self imposed limitation *@
         <li x-data="{title: '@g.Title'}" x-show="title.toLowerCase().trim().includes(search.toLowerCase().trim()) && expanded" id="game-card-@g.ID" targetDeckDisplay="@g.DeckID">
             
             <div class="game-card card">

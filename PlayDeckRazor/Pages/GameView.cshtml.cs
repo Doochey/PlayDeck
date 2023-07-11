@@ -11,7 +11,7 @@ namespace PlayDeckRazor.Pages;
 public class GameViewModel : PageModel
 {
     
-    private readonly PlayDeckRazorContext _context;
+    public readonly PlayDeckRazorContext _context;
     
     
     public Game? Game { get; set; }
