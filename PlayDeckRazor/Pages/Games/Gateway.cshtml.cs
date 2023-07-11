@@ -18,6 +18,13 @@ public class GatewayModel : PageModel
     [BindProperty(SupportsGet = true)]
     public int? DeckID { get; set; }
     
+    [BindProperty]
+    public int? PlayStatusChange { get; set; }
+    [BindProperty]
+    public int? RatingChange { get; set; }
+    [BindProperty]
+    public int? GameID { get; set; }
+
     /// <summary>
     /// id for game to be deleted, submitted by post from _GameCard delete button
     /// </summary>
@@ -175,6 +182,71 @@ public class GatewayModel : PageModel
         }
         return new BadRequestResult();
     }
-    
+
+    public async Task<IActionResult> OnPostRatingChangeAsync()
+    {
+        Game = await _context.Game.FindAsync(GameID);
+        if (Game == null)
+        {
+            return new NotFoundResult();
+        }
+        
+        if (RatingChange != null)
+        {
+            Game.Rating = RatingChange;
+        } 
+        else
+        {
+            return new BadRequestResult();
+        }
+        
+        _context.Attach(Game).State = EntityState.Modified;
+        
+        await _context.SaveChangesAsync();
+
+        GameViewModel newPartialModel = new GameViewModel(_context);
+        ViewDataDictionary newViewData = new ViewDataDictionary(new Microsoft.AspNetCore.Mvc.ModelBinding.EmptyModelMetadataProvider(),
+            new Microsoft.AspNetCore.Mvc.ModelBinding.ModelStateDictionary()) { { "GameViewModel", newPartialModel } };
+        newViewData.Model = newPartialModel;
+        newViewData["GameView"] = Game;
+        return new PartialViewResult()
+        {
+            ViewName = "_GameInfoPanel",
+            ViewData = newViewData,
+        };
+    }
+
+    public async Task<IActionResult> OnPostPlayStatusChangeAsync()
+    {
+        Game = await _context.Game.FindAsync(GameID);
+        if (Game == null)
+        {
+            return new NotFoundResult();
+        }
+        
+        if (PlayStatusChange != null)
+        {
+            Game.PlayStatus = PlayStatusChange;
+        }
+        else
+        {
+            return new BadRequestResult();
+        }
+        
+        _context.Attach(Game).State = EntityState.Modified;
+        
+        await _context.SaveChangesAsync();
+
+        GameViewModel newPartialModel = new GameViewModel(_context);
+        ViewDataDictionary newViewData = new ViewDataDictionary(new Microsoft.AspNetCore.Mvc.ModelBinding.EmptyModelMetadataProvider(),
+            new Microsoft.AspNetCore.Mvc.ModelBinding.ModelStateDictionary()) { { "GameViewModel", newPartialModel } };
+        newViewData.Model = newPartialModel;
+        newViewData["GameView"] = Game;
+        return new PartialViewResult()
+        {
+            ViewName = "_GameInfoPanel",
+            ViewData = newViewData,
+        };
+    }
         
 }

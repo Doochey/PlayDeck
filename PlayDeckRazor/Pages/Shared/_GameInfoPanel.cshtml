@@ -20,24 +20,24 @@
                             {
                                 if (i <= @g.Rating) @* Filled stars *@
                                 {
-                                    <form method="post">
+                                    <form x-data="{formID: @i}" id="star-form-@i" method="post" x-on:submit.prevent="changeRating(formID, @g.ID)" asp-page-handler="ratingchange">
                                         <input asp-for="GameID" class="form-control" value="@g.ID" type="hidden"/>
                                         <input asp-for="RatingChange" class="form-control" value="@i" type="hidden"/>
                                         <button class="star-button bi bi-star-fill checked"
                                                 type="submit"
-                                                formmethod="post"
+                                                x-on:submit.prevent="{}"
                                                 title="@i /10">
                                         </button>
                                     </form>
                                 }
                                 else @* Empty stars *@
                                 {
-                                    <form method="post">
+                                    <form x-data="{formID: @i}" id="star-form-@i" method="post" x-on:submit.prevent="changeRating(formID, @g.ID)" asp-page-handler="ratingchange">
                                         <input asp-for="GameID" class="form-control" value="@g.ID" type="hidden"/>
                                         <input asp-for="RatingChange" class="form-control" value="@i" type="hidden"/>
                                         <button class="star-button bi bi-star unchecked"
                                                 type="submit"
-                                                formmethod="post"
+                                                x-on:submit.prevent="{}"
                                                 title="@i /10">
                                         </button>
                                     </form>
@@ -54,12 +54,12 @@
                         @{
                             for (int i = 1; i < 11; i++)
                             {
-                                <form method="post">
+                                <form x-data="{formID: @i}" id="star-form-@i" method="post" x-on:submit.prevent="changeRating(formID, @g.ID)" asp-page-handler="ratingchange">
                                     <input asp-for="GameID" class="form-control" value="@g.ID" type="hidden"/>
                                     <input asp-for="RatingChange" class="form-control" value="@i" type="hidden"/>
                                     <button class="star-button bi bi-star unchecked"
                                             type="submit"
-                                            formmethod="post"
+                                            x-on:submit.prevent="{}"
                                             title="@i /10">
                                     </button>
                                 </form>
@@ -75,12 +75,12 @@
                             @{
                                 if (g.PlayStatus == 1) @* Game has been completed *@
                                 {
-                                    <form method="post">
+                                    <form id="playstatus-form" method="post" x-on:submit.prevent="changePlayStatus(@g.ID)" asp-page-handler="changeplaystatus">
                                         <input asp-for="GameID" class="form-control" value="@g.ID" type="hidden"/>
                                         <input asp-for="PlayStatusChange" class="form-control" value="0" type="hidden"/>
                                         <button class="trophy-button bi-trophy-fill trophy-checked"
                                                 type="submit"
-                                                formmethod="post"
+                                                x-on:submit.prevent="{}"
                                                 title="Toggle complete status">
                                         </button>
                                     </form>
@@ -88,12 +88,12 @@
                                 }
                                 else
                                 {
-                                    <form method="post">
+                                    <form id="playstatus-form" method="post" x-on:submit.prevent="changePlayStatus(@g.ID)" asp-page-handler="changeplaystatus">
                                         <input asp-for="GameID" class="form-control" value="@g.ID" type="hidden"/>
                                         <input asp-for="PlayStatusChange" class="form-control" value="1" type="hidden"/>
                                         <button class="trophy-button bi-trophy trophy-unchecked"
                                                 type="submit"
-                                                formmethod="post"
+                                                x-on:submit.prevent="{}"
                                                 title="Toggle complete status">
                                         </button>
                                     </form>
