@@ -32,6 +32,9 @@ public class GatewayModel : PageModel
     
     [BindProperty]
     public bool ToggleFavourite { get; set; }
+    
+    [BindProperty]
+    public string Fav_Toggle { get; set; }
 
     /// <summary>
     /// id for game to be deleted, submitted by post from _GameCard delete button
@@ -70,6 +73,10 @@ public class GatewayModel : PageModel
 
         if (GameExists(Game.ID))
         {
+            if (Fav_Toggle.Equals("Favourite"))
+            {
+                Game.Favourite = true;
+            }
             _context.Attach(Game).State = EntityState.Modified;
 
             try
@@ -110,6 +117,10 @@ public class GatewayModel : PageModel
 
         if (GameExists(Game.ID))
         {
+            if (Fav_Toggle.Equals("Favourite"))
+            {
+                Game.Favourite = true;
+            }
             _context.Attach(Game).State = EntityState.Modified;
 
             try
@@ -145,6 +156,10 @@ public class GatewayModel : PageModel
     {
         if (ModelState.IsValid && !GameExists(Game.ID))
         {
+            if (Fav_Toggle.Equals("Favourite"))
+            {
+                Game.Favourite = true;
+            }
             _context.Game.Add(Game);
             await _context.SaveChangesAsync();
 

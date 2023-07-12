@@ -14,9 +14,10 @@ document.addEventListener('alpine:init', () => {
         lastPlayed: '',
         mode: 'add',
         deckTitle: '',
+        favourite: '',
 
         setInfo(id, title) {this.gameId = id; this.gameTitle=title;},
-        setInfoFull(id, title, deckId, imageUrl, playStatus, startDate, completeDate, rating, playTime, lastPlayed) {
+        setInfoFull(id, title, deckId, imageUrl, playStatus, startDate, completeDate, rating, playTime, lastPlayed, favourite) {
             this.gameId = id ?? null;
             this.gameTitle = title ?? null;
             this.deckId = deckId ?? null;
@@ -27,6 +28,7 @@ document.addEventListener('alpine:init', () => {
             this.rating = rating ?? null;
             this.playTime = playTime ?? null;
             this.lastPlayed = lastPlayed ?? null;
+            this.favourite = favourite ?? false;
         }
     })
 })
@@ -39,13 +41,13 @@ async function GetGameDetails(id) {
             let jsonResponse = JSON.parse(data);
             Alpine.store('gameData').setInfoFull(jsonResponse['ID'], jsonResponse['Title'], jsonResponse['DeckID'], jsonResponse['ImageURL'],
                 jsonResponse['PlayStatus'], jsonResponse['StartDate']?.split("T")[0], jsonResponse['CompleteDate']?.split("T")[0], jsonResponse['Rating'],
-                jsonResponse['PlayTime'], jsonResponse['LastPlayed']?.split("T")[0]);
+                jsonResponse['PlayTime'], jsonResponse['LastPlayed']?.split("T")[0], jsonResponse['Favourite']);
         })
         .catch(errorMsg => { console.log(errorMsg); });
 }
 
 function ResetGameDetails() {
-    Alpine.store('gameData').setInfoFull(null,null, null, null, null, null, null, null, null, null);
+    Alpine.store('gameData').setInfoFull(null,null, null, null, null, null, null, null, null, null, null);
 }
 
 
@@ -67,7 +69,10 @@ async function SendDelete(gameView) {
             if (gameView) {
                 window.location.replace("https://localhost:6610/");
             } else {
-                document.querySelector('#game-card-' + data).remove();
+                // If game is tagged favourite there will be multiple elements with same id
+                while (document.querySelector('#game-card-' + data) != null) {
+                    document.querySelector('#game-card-' + data).remove();
+                }
                 ShowToast('Deletion', 'was removed from the database.');  
             }
         })
@@ -81,14 +86,37 @@ async function SendEdit(id) {
         body: new FormData(document.querySelector('#edit-modal-form'))})
         .then(response => response.text())
         .then(data => {
-            document.querySelector('#game-card-' + id).remove();
-            newCard = document.createElement('div');
-            newCard.innerHTML = data;
-            newCard = newCard.getElementsByTagName('li')[0];
-            const targetDisplay = newCard.getAttribute('targetDeckDisplay');
-            deckCardsDisplay =  document.querySelector("ul[deckDisplay=" + CSS.escape(targetDisplay) + "]");
-            deckCardsDisplay ? deckCardsDisplay.prepend(newCard) : null;
-            ShowToast('Edit', 'was modified.');
+            const before = Alpine.store('gameData').deckId;
+            GetGameDetails(id).then(result => {
+                if (!Alpine.store('gameData').favourite) {
+                    // If game is tagged favourite there will be multiple elements with same id
+                    while (document.querySelector('#game-card-' + id) != null) {
+                        document.querySelector('#game-card-' + id).remove();
+                    }
+                } else {
+                    switch (before) {
+                        case 0:
+                            document.querySelector("ul[deckDisplay='0']").querySelector('#game-card-' + id).remove();
+                            break;
+                        case 1:
+                            document.querySelector("ul[deckDisplay='1']").querySelector('#game-card-' + id).remove();
+                            break;
+                        case 2:
+                            document.querySelector("ul[deckDisplay='2']").querySelector('#game-card-' + id).remove();
+                            break;
+                        case 3:
+                            document.querySelector("ul[deckDisplay='3']").querySelector('#game-card-' + id).remove();
+                            break;
+                    }
+                }
+                newCard = document.createElement('div');
+                newCard.innerHTML = data;
+                newCard = newCard.getElementsByTagName('li')[0];
+                const targetDisplay = newCard.getAttribute('targetDeckDisplay');
+                deckCardsDisplay =  document.querySelector("ul[deckDisplay=" + CSS.escape(targetDisplay) + "]");
+                deckCardsDisplay ? deckCardsDisplay.prepend(newCard) : null;
+                ShowToast('Edit', 'was modified.');
+            })
         })
         .catch(errorMsg => { console.log(errorMsg); });
 }

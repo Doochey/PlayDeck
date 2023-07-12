@@ -17,6 +17,9 @@ public class IndexModel : PageModel
 
     public List<Game>? FilteredList { get; set; }
     
+    public int? GameID { get; set; }
+    public bool ToggleFavourite { get; set; }
+    
     [BindProperty]
     public int? GameDeleteId { get; set; }
     
@@ -39,6 +42,7 @@ public class IndexModel : PageModel
         Decks[1].Title = "Currently Playing";
         Decks[2].Title = "Complete";
         Decks[3].Title = "Wishlist";
+        Decks[4].Title = "Favourites";
     }
 
     public async Task OnGetAsync()
@@ -47,6 +51,10 @@ public class IndexModel : PageModel
         await foreach (Game g in _context.Game)
         {
             Decks[g.DeckID].GameList.Add(g);
+            if (g.Favourite)
+            {
+                Decks[4].GameList.Add(g);
+            }
         }
     }
     

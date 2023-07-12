@@ -38,13 +38,26 @@ public class ViewModel : PageModel
         {
             Title = title
         };
+
+        List<Game> result;
+        if (id != 4)
+        {
+            // Select all games with this deck id
+            var games = 
+                from g in _context.Game
+                select g;
+            games = games.Where(s => s.DeckID == Deck.ID);
+            result = await games.ToListAsync();
+        }
+        else
+        {
+            var games = 
+                from g in _context.Game
+                select g;
+            games = games.Where(s => s.Favourite == true);
+            result = await games.ToListAsync();
+        }
         
-        // Select all games with this deck id
-        var games = 
-            from g in _context.Game
-            select g;
-        games = games.Where(s => s.DeckID == Deck.ID);
-        List<Game> result = await games.ToListAsync();
             
         foreach (Game g in result)
         {

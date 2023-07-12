@@ -58,6 +58,12 @@
                     <label asp-for="Game.LastPlayed" class="input-group-text" style="font-weight: bold"></label>
                     <input asp-for="Game.LastPlayed" class="form-control" x-bind:value="lastPlayed"/>
                 </div>
+                <div class="input-group">
+                    <div class="input-group-text">
+                        <input type="checkbox" asp-for="Fav_Toggle" class="form-check-input" value="Favourite" x-bind:checked="favourite"/>
+                    </div>
+                    <label asp-for="Fav_Toggle" class="form-control" style="font-weight: bold">Favourite</label>
+                </div>
             </div>
             <div class="validation-errors d-flex flex-column">
                 <span asp-validation-for="Game.StartDate" class="text-danger"></span>

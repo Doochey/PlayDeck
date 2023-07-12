@@ -19,6 +19,8 @@ public class _ModalGameDetailsModel : PageModel
     /// </summary>
     public List<SelectListItem> Statuses { get; set; }
     
+    public string Fav_Toggle { get; set; }
+    
     
     public _ModalGameDetailsModel(PlayDeckRazor.Data.PlayDeckRazorContext context)
     {
