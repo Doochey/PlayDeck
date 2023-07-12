@@ -169,6 +169,29 @@ async function toggleFavGameView(gameID) {
         .catch(errorMsg => { console.log(errorMsg); });
 }
 
+async function exportGames() {
+    await fetch('https://localhost:6610/Games/Gateway/export/', {
+        method: 'POST',
+        body: new FormData(document.querySelector('#export-form'))})
+        .then(response => response.text())
+        .then(data => {
+            console.log('exported')
+        })
+        .catch(errorMsg => { console.log(errorMsg); });
+}
+
+async function importGames() {
+    await fetch('https://localhost:6610/Games/Gateway/import/', {
+        method: 'POST',
+        body: new FormData(document.querySelector('#import-form'))})
+        .then(response => response.text())
+        .then(data => {
+            location.reload();
+            console.log('imported');
+        })
+        .catch(errorMsg => { console.log(errorMsg); });
+}
+
 
 
 

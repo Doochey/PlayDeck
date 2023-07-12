@@ -389,3 +389,23 @@ h1 {
   border-image: linear-gradient(135deg, #285CD6, #094089) 1;
 }
 
+.import-button, .export-button {
+  margin-top: auto;
+  padding: 0 0.6vw;
+  border-image: linear-gradient(135deg, var(--light-blue), #285CD6) 1;
+  border-width: 2px;
+  transition: 0.1s;
+  color: whitesmoke;
+  background-color: var(--flix-black);
+  font-family: "Open Sans SemiBold", "Segoe UI", sans-serif;
+}
+
+.import-button:hover {
+  background-image: linear-gradient(135deg, #eb4155, #D82929);
+  border-image: linear-gradient(135deg, #eb4155, #D82929) 1;
+  transition: 0.1s;
+}
+
+.export-button:hover {
+  background-image: linear-gradient(135deg, var(--light-blue), #285CD6);
+}

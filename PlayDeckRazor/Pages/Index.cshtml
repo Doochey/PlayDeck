@@ -103,6 +103,27 @@
         </div>
     </div>
 </div>
+<div class="d-flex gap-2">
+    <div class="ms-auto">
+        <form x-data id="export-form" method="post" x-on:submit.prevent="exportGames()" asp-page-handler="export">
+            <button class="export-button"
+                    type="submit"
+                    x-on:submit.prevent="{}"
+                    title="Export">Export
+            </button>
+        </form>
+    </div>
+    <div class="me-auto">
+        <form x-data id="import-form" method="post" x-on:submit.prevent="importGames()" asp-page-handler="import">
+            <button class="import-button"
+                    type="submit"
+                    x-on:submit.prevent="{}"
+                    title="Import">Import
+            </button>
+        </form>
+    </div>
+</div>
+
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}

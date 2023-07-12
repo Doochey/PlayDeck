@@ -1,10 +1,15 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using System.Collections;
+using System.Text;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.ViewFeatures;
 using Microsoft.EntityFrameworkCore;
 using NuGet.Protocol;
 using PlayDeckRazor.Data;
 using PlayDeckRazor.Model;
+using System;
+using System.IO;
+using System.Text;
 
 namespace PlayDeckRazor.Pages.Games;
 
@@ -285,5 +290,121 @@ public class GatewayModel : PageModel
             ViewData = newViewData,
         };
     }
+
+    public async Task<IActionResult> OnPostExportAsync()
+    {
+        List<object> games = (from Game in _context.Game
+            select new object[] {
+                Game.CompleteDate,
+                Game.DeckID,
+                Game.Favourite,
+                Game.ID,
+                Game.ImageURL,
+                Game.LastPlayed,
+                Game.Platform,
+                Game.PlayStatus,
+                Game.PlayTime,
+                Game.Rating,
+                Game.StartDate,
+                Game.Title
+            }).ToList<object>();
+        //Insert the Column Names.
+        games.Insert(0, new string[12] { "CompleteDate", "DeckID", "Favourite", "ID", "ImageURL", 
+            "LastPlayed", "Platform", "PlayStatus", "PlayTime", "Rating", "StartDate", "Title" });
         
+        StringBuilder sb = new StringBuilder();
+        for (int i = 0; i < games.Count; i++)
+        {
+            string[] game = Array.ConvertAll((object[])games[i], Convert.ToString)!;
+            for (int j = 0; j < game.Length; j++)
+            {
+                //Append data with separator.
+                sb.Append(game[j].ToString() + ',');
+            }
+ 
+            //Append new line character.
+            sb.Append("\r\n");
+ 
+        }
+
+        var systemPath = System.Environment.
+            GetFolderPath(
+                Environment.SpecialFolder.CommonApplicationData
+            );
+        var path = systemPath + "\\PlayDeck";
+        Directory.CreateDirectory(path);
+        var complete = Path.Combine(path , "PlayDeckExport.csv");
+        
+        // Create the file, or overwrite if the file exists.
+        await using (FileStream fs = System.IO.File.Create(complete))
+        {
+            byte[] info = Encoding.UTF8.GetBytes(sb.ToString());
+            // Add some information to the file.
+            fs.Write(info, 0, info.Length);
+        }
+ 
+        return new OkObjectResult(1);
+    }
+
+    public async Task<IActionResult> OnPostImportAsync()
+    {
+        var systemPath = System.Environment.
+            GetFolderPath(
+                Environment.SpecialFolder.CommonApplicationData
+            );
+        var path = systemPath + "\\PlayDeck";
+        Directory.CreateDirectory(path);
+        var complete = Path.Combine(path , "PlayDeckExport.csv");
+        var readcsv = System.IO.File.ReadAllText(complete);
+        string[] csvfilerecord = readcsv.Split('\n');
+
+        foreach (var row in csvfilerecord)
+        {
+            if (!string.IsNullOrEmpty(row))
+            {
+                
+                var cells = row.Split(',');
+                if (!cells[0].Equals("CompleteDate"))
+                {
+                    var game = new Game();
+                    {
+                        if (cells[0] != "")
+                        {
+                            game.CompleteDate = DateTime.Parse(cells[0]);
+                        }
+                        if (cells[1] != "")
+                        {
+                            game.DeckID = Int32.Parse(cells[1]);
+                        }
+                        game.Favourite = bool.Parse(cells[2].ToLower());
+                        game.ID =  0;
+                        game.ImageURL = cells[4];
+                        if (cells[5] != "")
+                        {
+                            game.LastPlayed = DateTime.Parse(cells[5]);
+                        }
+                        game.Platform = null;
+                        game.PlayStatus = Int32.Parse(cells[7]);
+                        if (cells[8] != "")
+                        {
+                            game.PlayTime = Single.Parse(cells[8]);
+                        }
+                        if (cells[9] != "")
+                        {
+                            game.Rating = Int32.Parse(cells[9]);
+                        }
+                        if (cells[10] != "")
+                        {
+                            game.StartDate = DateTime.Parse(cells[10]);
+                        }
+                        game.Title = cells[11];
+                    };
+                    _context.Game.Add(game);
+                }
+            }
+        }
+        await _context.SaveChangesAsync();
+        return new OkObjectResult(1);
+    }
+
 }
