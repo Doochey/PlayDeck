@@ -88,26 +88,9 @@ async function SendEdit(id) {
         .then(data => {
             const before = Alpine.store('gameData').deckId;
             GetGameDetails(id).then(result => {
-                if (!Alpine.store('gameData').favourite) {
-                    // If game is tagged favourite there will be multiple elements with same id
-                    while (document.querySelector('#game-card-' + id) != null) {
-                        document.querySelector('#game-card-' + id).remove();
-                    }
-                } else {
-                    switch (before) {
-                        case 0:
-                            document.querySelector("ul[deckDisplay='0']").querySelector('#game-card-' + id).remove();
-                            break;
-                        case 1:
-                            document.querySelector("ul[deckDisplay='1']").querySelector('#game-card-' + id).remove();
-                            break;
-                        case 2:
-                            document.querySelector("ul[deckDisplay='2']").querySelector('#game-card-' + id).remove();
-                            break;
-                        case 3:
-                            document.querySelector("ul[deckDisplay='3']").querySelector('#game-card-' + id).remove();
-                            break;
-                    }
+                // If game is tagged favourite there will be multiple elements with same id
+                while (document.querySelector('#game-card-' + id) != null) {
+                    document.querySelector('#game-card-' + id).remove();
                 }
                 newCard = document.createElement('div');
                 newCard.innerHTML = data;
@@ -115,6 +98,9 @@ async function SendEdit(id) {
                 const targetDisplay = newCard.getAttribute('targetDeckDisplay');
                 deckCardsDisplay =  document.querySelector("ul[deckDisplay=" + CSS.escape(targetDisplay) + "]");
                 deckCardsDisplay ? deckCardsDisplay.prepend(newCard) : null;
+                if (Alpine.store('gameData').favourite) {
+                    document.querySelector("ul[deckDisplay='4']").prepend(newCard.cloneNode(true));
+                }
                 ShowToast('Edit', 'was modified.');
             })
         })
