@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using PlayDeckRazor.Data;
 
@@ -11,9 +12,10 @@ using PlayDeckRazor.Data;
 namespace PlayDeckRazor.Migrations
 {
     [DbContext(typeof(PlayDeckRazorContext))]
-    partial class PlayDeckRazorContextModelSnapshot : ModelSnapshot
+    [Migration("20230711215914_AddFavouriteBoolToGame")]
+    partial class AddFavouriteBoolToGame
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

@@ -25,4 +25,7 @@ public class Game : IGame
     public float? PlayTime { get; set; }
     [Display(Name = "Last Played"), DataType(DataType.Date)]
     public DateTime? LastPlayed { get; set; }
+    
+    [Display(Name = "Favourite")]
+    public bool Favourite { get; set; }
 }

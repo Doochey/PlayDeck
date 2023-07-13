@@ -38,36 +38,31 @@ public class ViewModel : PageModel
         {
             Title = title
         };
-        
-        // If user submitted search string
-        if (!string.IsNullOrEmpty(CollectionSearch))
-        {
-            // Select all games with this deck id that also contain search string in game title
-            var games = 
-                from g in _context.Game
-                select g;
-            games = games.Where(s => s.Title.Contains(CollectionSearch) && s.DeckID == Deck.ID);
-            List<Game> result = await games.ToListAsync();
-            
-            // Add results to deck
-            foreach (Game g in result)
-            {
-                Deck.GameList.Add(g);
-            }
-        }
-        else
+
+        List<Game> result;
+        if (id != 4)
         {
             // Select all games with this deck id
             var games = 
                 from g in _context.Game
                 select g;
             games = games.Where(s => s.DeckID == Deck.ID);
-            List<Game> result = await games.ToListAsync();
+            result = await games.ToListAsync();
+        }
+        else
+        {
+            // Viewing Favourites deck, get all games tagged as favourite
+            var games = 
+                from g in _context.Game
+                select g;
+            games = games.Where(s => s.Favourite == true);
+            result = await games.ToListAsync();
+        }
+        
             
-            foreach (Game g in result)
-            {
-                Deck.GameList.Add(g);
-            }
+        foreach (Game g in result)
+        {
+            Deck.GameList.Add(g);
         }
     }
 

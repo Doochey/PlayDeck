@@ -63,6 +63,11 @@ namespace PlayDeckRazor.Pages.Games
                 {
                     Text = "Complete",
                     Value = "2"
+                },
+                new()
+                {
+                    Text = "Wishlist",
+                    Value = "3"
                 }
             };
             

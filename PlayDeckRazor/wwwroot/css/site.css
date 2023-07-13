@@ -1,3 +1,9 @@
+:root {
+  --light-red: #eb4155;
+  --light-blue: #34a7dc;
+  --flix-black: #141414;
+}
+
 html {
   font-size: 14px;
 }
@@ -19,12 +25,21 @@ html {
 }
 
 .nav-link:hover {
-  color: #34a7dc;
+  color: var(--light-blue);
+}
+
+header {
+  background-color: #141414;
+}
+
+footer {
+  background-color: #141414;
 }
 
 body {
   margin-bottom: 5.3vw;
   background-color: #141414;
+  background-image: url("../Resources/Background.png");
   color: whitesmoke;
   font-family: "Open Sans", "Segoe UI",sans-serif;
 }
@@ -43,23 +58,29 @@ h1 {
   color: whitesmoke;
   font-family: "Open Sans", "Segoe UI",sans-serif;
   font-size: 18px;
-  border-color: #eb4155;
+  border-color: var(--light-blue);
   border-style: solid;
   border-width: 1px;
 }
 
 .modal-header {
-  border-color: #34a7dc;
+  border-color: var(--light-red);
+  margin: auto;
+  width: 75%;
 }
 
 .modal-footer {
-  border-color: #34a7dc;
+  border-color: var(--flix-black);
+}
+
+.modal-title {
+  text-align: center;
+  margin: auto;
 }
 
 .deck-display-container {
   margin: 1vw;
   max-width: 75vw;
-  height: auto;
 }
 
 .deck-display {
@@ -79,11 +100,25 @@ h1 {
   
 }
 
-.add-game-button {
+.add-game-button{
   text-decoration: none;
   color: whitesmoke;
   font-family: "Open Sans SemiBold", "Segoe UI", sans-serif;
   font-size: 20pt;
+  font-weight: bolder;
+}
+
+.hide-button-container {
+  margin-left: auto;
+  margin-right: 0.5vw;
+  padding-top: 0.3vw;
+}
+
+.hide-button {
+  text-decoration: none;
+  color: whitesmoke;
+  font-family: "Open Sans SemiBold", "Segoe UI", sans-serif;
+  font-size: 12pt;
   font-weight: bolder;
 }
 
@@ -94,11 +129,11 @@ h1 {
 
 .view-all-container {
   padding-top: 1vw;
-  margin-left: auto;
 }
 
 .view-all-button {
   text-decoration: none;
+  color: var(--light-blue);
   font-family: "Open Sans", "Segoe UI", sans-serif;
 }
 
@@ -106,17 +141,17 @@ h1 {
   margin-top: 0.6vw;
   padding: 0 0.6vw;
   background-color: transparent;
-  border-color: #34a7dc;
-  border-image: linear-gradient(135deg, #34A7DC, #285CD6) 1;
+  border-color: var(--light-blue);
+  border-image: linear-gradient(135deg, var(--light-blue), #285CD6) 1;
   border-width: 3px;
   border-style: solid;
   transition: 0.1s;
 }
 
 .btn-primary:hover {
-  border-color: #34a7dc;
-  border-image: linear-gradient(135deg, #34A7DC, #285CD6) 1;
-  background-image: linear-gradient(135deg, #34A7DC, #285CD6);
+  border-color: var(--light-blue);
+  border-image: linear-gradient(135deg, var(--light-blue), #285CD6) 1;
+  background-image: linear-gradient(135deg, var(--light-blue), #285CD6);
   transition: 0.1s;
 }
 
@@ -169,7 +204,7 @@ h1 {
   min-height: 2vw;
   border-style: dashed;
   border-width: 0.2vw;
-  border-color: #34a7dc;
+  border-color: var(--light-blue);
   text-align: center;
   border-radius: 100%;
 }
@@ -183,7 +218,7 @@ h1 {
 }
 
 .edit-game-button:hover {
-  background-image: linear-gradient(135deg, #34a7dc, #285CD6);
+  background-image: linear-gradient(135deg, var(--light-blue), #285CD6);
   border-style: solid;
   border-color: whitesmoke;
   color: whitesmoke;
@@ -207,7 +242,7 @@ h1 {
   min-height: 2vw;
   border-style: dashed;
   border-width: 0.2vw;
-  border-color: #eb4155;
+  border-color: var(--light-red);
   text-align: center;
   border-radius: 100%;
 }
@@ -221,7 +256,7 @@ h1 {
 }
 
 .delete-game-button:hover {
-  background-image: linear-gradient(135deg, #eb4155, #920406);
+  background-image: linear-gradient(135deg, var(--light-red), #920406);
   border-style: solid;
   border-color: whitesmoke;
   color: whitesmoke;
@@ -244,7 +279,7 @@ h1 {
 .checked {
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
-  background-image: linear-gradient(135deg, #34A7DC, #285CD6);
+  background-image: linear-gradient(135deg, var(--light-blue), #285CD6);
 }
 
 .trophy-display-container {
@@ -269,6 +304,30 @@ h1 {
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-image: linear-gradient(135deg, goldenrod, darkgoldenrod);
+}
+
+.heart-display-container {
+  visibility: hidden;
+  position: absolute;
+  bottom: 15%;
+  right: 2%;
+  font-weight: bold;
+  font-size: large;
+  padding: 0.3vw 0.6vw;
+  border-radius: 10%;
+  background-color: rgba(6,3,3,0.45);
+}
+
+.heart-checked {
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-image: linear-gradient(135deg, firebrick, darkred);
+}
+
+.heart-unchecked {
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-image: linear-gradient(135deg, firebrick, darkred);
 }
 
 .game-card:hover .delete-game-container {
@@ -312,5 +371,41 @@ h1 {
   font-family: "Open Sans SemiBold", "Segoe UI", sans-serif;
   color: whitesmoke;
   font-size: 20px;
+  overflow-wrap: anywhere;
 }
 
+
+.submit-button{
+  min-height: 2vw;
+  min-width: 4vw;
+  font-weight: bold;
+  padding: 0.2vw;
+  margin: 0;
+  background-image: linear-gradient(135deg, var(--light-blue), #285CD6);
+}
+
+.submit-button:hover {
+  background-image: linear-gradient(135deg, #285CD6, #094089);
+  border-image: linear-gradient(135deg, #285CD6, #094089) 1;
+}
+
+.import-button, .export-button {
+  margin-top: auto;
+  padding: 0 0.6vw;
+  border-image: linear-gradient(135deg, var(--light-blue), #285CD6) 1;
+  border-width: 2px;
+  transition: 0.1s;
+  color: whitesmoke;
+  background-color: var(--flix-black);
+  font-family: "Open Sans SemiBold", "Segoe UI", sans-serif;
+}
+
+.import-button:hover {
+  background-image: linear-gradient(135deg, #eb4155, #D82929);
+  border-image: linear-gradient(135deg, #eb4155, #D82929) 1;
+  transition: 0.1s;
+}
+
+.export-button:hover {
+  background-image: linear-gradient(135deg, var(--light-blue), #285CD6);
+}

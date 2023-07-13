@@ -3,3 +3,7 @@ obj/
 /packages/
 riderModule.iml
 /_ReSharper.Caches/
+PlayDeckRazor/App_Data/PlayDeckDB.mdf
+PlayDeckRazor/App_Data/PlayDeckDB_log.ldf
+.idea/.idea.PlayDeckRazor/.idea/efCoreDialogsState.xml
+.idea/.idea.PlayDeckRazor/.idea/efCoreCommonOptions.xml

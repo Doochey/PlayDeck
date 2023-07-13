@@ -8,6 +8,7 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true"/>
     <link rel="stylesheet" href="~/PlayDeckRazor.styles.css" asp-append-version="true"/>
+    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
 </head>
 <body>
 <header>
@@ -49,22 +50,21 @@
             <script type='text/javascript' src='https://storage.ko-fi.com/cdn/widget/Widget_2.js'></script><script type='text/javascript'>kofiwidget2.init('Support Me on Ko-fi', '#d82929', 'K3K4LMW7G');kofiwidget2.draw();</script>  
         </div>
         <div class="d-flex">
-                <ul class="d-flex" style="gap: 1vw; color: whitesmoke; list-style-type: none; padding-left: 0">
-                    <li class="social-link" style="font-size: 1.5vw;">
-                        <a class="bi bi-github" href="https://github.com/Doochey/PlayDeck" title="GitHub Repo" target="_blank"></a>
-                    </li>
-                    <li class="social-link" style="font-size: 1.5vw">
-                        <a class="bi bi-twitter" href="https://twitter.com/PlayDeckDev" title="@@PlayDeck Twitter" target="_blank"></a>
-                    </li>
-                </ul>
-            </div>
+            <ul class="d-flex" style="gap: 1vw; color: whitesmoke; list-style-type: none; padding-left: 0">
+                <li class="social-link" style="font-size: 1.5vw;">
+                    <a class="bi bi-github" href="https://github.com/Doochey/PlayDeck" title="GitHub Repo" target="_blank"></a>
+                </li>
+                <li class="social-link" style="font-size: 1.5vw">
+                    <a class="bi bi-twitter" href="https://twitter.com/PlayDeckDev" title="@@PlayDeck Twitter" target="_blank"></a>
+                </li>
+            </ul>
+        </div>
     </div>
 </footer>
 
 <script src="~/lib/jquery/dist/jquery.min.js"></script>
 <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
 <script src="~/js/site.js" asp-append-version="true"></script>
-
 @await RenderSectionAsync("Scripts", required: false)
 </body>
 </html>

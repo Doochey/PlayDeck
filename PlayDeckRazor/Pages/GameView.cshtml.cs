@@ -11,7 +11,7 @@ namespace PlayDeckRazor.Pages;
 public class GameViewModel : PageModel
 {
     
-    private readonly PlayDeckRazorContext _context;
+    public readonly PlayDeckRazorContext _context;
     
     
     public Game? Game { get; set; }
@@ -25,6 +25,8 @@ public class GameViewModel : PageModel
     
     [BindProperty]
     public int? GameDeleteID { get; set; }
+    
+    public bool ToggleFavourite { get; set; }
     
     [StringLength(50, MinimumLength = 1), Display(Name = "Title")]
     [BindProperty]

@@ -81,14 +81,16 @@ Manage and store details such as:
 * Complete status
 * Star Rating
 
-Add each game to one of three Decks: 
+Add each game to one of four Decks: 
 * Currently Playing
 * Complete 
 * My Collection
+* Wishlist
 
 ### Built With
 
 * [![Bootstrap][Bootstrap.com]][Bootstrap-url]
+* [![Alpine][Alpine.js]][Alpine-url]
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
@@ -111,7 +113,7 @@ Visit the [Releases](https://github.com/Doochey/PlayDeck/releases) tab and downl
 6. Unless you are using a Demo version you should see this: ![image](https://github.com/Doochey/PlayDeck/assets/22661442/e18ee891-f7c8-4f5a-9333-fa9b8caca0a8)
 
 
-7. You are now ready to use PlayDeck! Begin by adding games to any of the three decks by clicking the + buttons. When you're done, close the console and browser window, 
+7. You are now ready to use PlayDeck! Begin by adding games to any of the four decks by clicking the + buttons. When you're done, close the console and browser window, 
    when you want to view or edit your decks again, simply run the PlayDeckRazor.exe and navigate to https://localhost:6610/ like you did the first time.
 
 
@@ -145,7 +147,7 @@ Click the delete button
 
 
 To edit any details about a game, such as which deck the game appears in, either:
-* Click the buttons on the game details page, this is only available for the Title,Star Rating and Complete Trophy
+* Click the buttons on the game details page, this is only available for the Title,Star Rating, Favourite, and Complete Trophy
 * Click the 'Edit Details' button on the game details page
 * Hover over the card in the deck view and click the pencil button
 
@@ -160,8 +162,8 @@ To edit any details about a game, such as which deck the game appears in, either
 ## Hopeful Features
 
 - [ ] Allow the creation of custom decks beyond the defaults
-- [ ] Add a wishlist deck to the defaults
-- [ ] Add the ability to tag games as favourites
+- [x] Add a wishlist deck to the defaults
+- [x] Add the ability to tag games as favourites
 - [ ] Controls on the sides of deck displays to let you browse games in the deck
 - [ ] Launch app as a background service that runs on startup
 - [ ] Accessibility & Responsive pass
@@ -198,3 +200,5 @@ Project Link: [https://github.com/Doochey/PlayDeck](https://github.com/Doochey/P
 [product-screenshot]: https://github.com/Doochey/PlayDeck/assets/22661442/9e592298-21f7-4810-9f16-3f66bc16a847
 [Bootstrap.com]: https://img.shields.io/badge/Bootstrap-563D7C?style=for-the-badge&logo=bootstrap&logoColor=white
 [Bootstrap-url]: https://getbootstrap.com
+[Alpine.js]: https://img.shields.io/badge/Alpine.js-blue?style=for-the-badge&logo=Alpine.js&logoColor=white
+[Alpine-url]: https://alpinejs.dev

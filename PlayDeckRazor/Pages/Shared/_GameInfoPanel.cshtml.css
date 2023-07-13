@@ -10,6 +10,7 @@
 
 h1 {
     font-size: 60px;
+    overflow-wrap: anywhere;
 }
 
 .star-button {
@@ -61,6 +62,20 @@ h1 {
     transition: .15s;
 }
 
+.heart-checked {
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-image: linear-gradient(135deg, firebrick, darkred);
+    transition: .15s;
+}
+
+.heart-unchecked {
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-image: linear-gradient(135deg, firebrick, darkred);
+    transition: .15s;
+}
+
 .play-status-text {
     font-size: 30px;
     margin-top: 5px;
@@ -74,7 +89,20 @@ h1 {
     transition: .15s;
 }
 
+.heart-button {
+    border: none;
+    padding: 0;
+    margin: 0;
+    font-size: 30px;
+    transition: .15s;
+}
+
 .trophy-button:hover {
+    transition: .25s;
+    transform: scale(1.2);
+}
+
+.heart-button:hover {
     transition: .25s;
     transform: scale(1.2);
 }

@@ -6,10 +6,39 @@
 @{
     if (ViewData["GameView"] is Game g)
     {
-        <div class="game-info d-flex flex-column">
+        <div id="info-panel" class="game-info d-flex flex-column">
             <div class="game-info-header d-flex">
+                <div style="margin-top: 1vw; margin-right: 1vw">
+                    @{
+                        if (g.Favourite)
+                        {
+                            <form id="fav-change-form" method="post" x-on:submit.prevent="toggleFavGameView(@g.ID)" asp-page-handler="togglefavgameview">
+                                <input asp-for="GameID" class="form-control" value="@g.ID" type="hidden"/>
+                                <input asp-for="ToggleFavourite" class="form-control" value="true" type="hidden"/>
+                                <button class="heart-button bi bi-heart-fill heart-checked"
+                                        type="submit"
+                                        x-on:submit.prevent="{}"
+                                        title="Toggle favourite">
+                                </button>
+                            </form>
+                        }
+                        else
+                        {
+                            <form id="fav-change-form" method="post" x-on:submit.prevent="toggleFavGameView(@g.ID)" asp-page-handler="togglefavgameview">
+                                <input asp-for="GameID" class="form-control" value="@g.ID" type="hidden"/>
+                                <input asp-for="ToggleFavourite" class="form-control" value="true" type="hidden"/>
+                                <button class="heart-button bi bi-heart heart-unchecked"
+                                        type="submit"
+                                        x-on:submit.prevent="{}"
+                                        title="Toggle favourite">
+                                </button>
+                            </form>
+                        }
+                    }
+                </div>
                 <h1>@g.Title</h1>
-                <p class="bi bi-pencil edit-title" data-bs-toggle="modal" data-bs-target="#edit-title-modal" title="Edit Title"></p>
+
+
             </div>
             @{
                @* Star Rating Display *@
@@ -21,24 +50,24 @@
                             {
                                 if (i <= @g.Rating) @* Filled stars *@
                                 {
-                                    <form method="post">
+                                    <form x-data="{formID: @i}" id="star-form-@i" method="post" x-on:submit.prevent="changeRating(formID, @g.ID)" asp-page-handler="ratingchange">
                                         <input asp-for="GameID" class="form-control" value="@g.ID" type="hidden"/>
                                         <input asp-for="RatingChange" class="form-control" value="@i" type="hidden"/>
                                         <button class="star-button bi bi-star-fill checked"
                                                 type="submit"
-                                                formmethod="post"
+                                                x-on:submit.prevent="{}"
                                                 title="@i /10">
                                         </button>
                                     </form>
                                 }
                                 else @* Empty stars *@
                                 {
-                                    <form method="post">
+                                    <form x-data="{formID: @i}" id="star-form-@i" method="post" x-on:submit.prevent="changeRating(formID, @g.ID)" asp-page-handler="ratingchange">
                                         <input asp-for="GameID" class="form-control" value="@g.ID" type="hidden"/>
                                         <input asp-for="RatingChange" class="form-control" value="@i" type="hidden"/>
                                         <button class="star-button bi bi-star unchecked"
                                                 type="submit"
-                                                formmethod="post"
+                                                x-on:submit.prevent="{}"
                                                 title="@i /10">
                                         </button>
                                     </form>
@@ -55,12 +84,12 @@
                         @{
                             for (int i = 1; i < 11; i++)
                             {
-                                <form method="post">
+                                <form x-data="{formID: @i}" id="star-form-@i" method="post" x-on:submit.prevent="changeRating(formID, @g.ID)" asp-page-handler="ratingchange">
                                     <input asp-for="GameID" class="form-control" value="@g.ID" type="hidden"/>
                                     <input asp-for="RatingChange" class="form-control" value="@i" type="hidden"/>
                                     <button class="star-button bi bi-star unchecked"
                                             type="submit"
-                                            formmethod="post"
+                                            x-on:submit.prevent="{}"
                                             title="@i /10">
                                     </button>
                                 </form>
@@ -76,12 +105,12 @@
                             @{
                                 if (g.PlayStatus == 1) @* Game has been completed *@
                                 {
-                                    <form method="post">
+                                    <form id="playstatus-form" method="post" x-on:submit.prevent="changePlayStatus(@g.ID)" asp-page-handler="changeplaystatus">
                                         <input asp-for="GameID" class="form-control" value="@g.ID" type="hidden"/>
                                         <input asp-for="PlayStatusChange" class="form-control" value="0" type="hidden"/>
                                         <button class="trophy-button bi-trophy-fill trophy-checked"
                                                 type="submit"
-                                                formmethod="post"
+                                                x-on:submit.prevent="{}"
                                                 title="Toggle complete status">
                                         </button>
                                     </form>
@@ -89,12 +118,12 @@
                                 }
                                 else
                                 {
-                                    <form method="post">
+                                    <form id="playstatus-form" method="post" x-on:submit.prevent="changePlayStatus(@g.ID)" asp-page-handler="changeplaystatus">
                                         <input asp-for="GameID" class="form-control" value="@g.ID" type="hidden"/>
                                         <input asp-for="PlayStatusChange" class="form-control" value="1" type="hidden"/>
                                         <button class="trophy-button bi-trophy trophy-unchecked"
                                                 type="submit"
-                                                formmethod="post"
+                                                x-on:submit.prevent="{}"
                                                 title="Toggle complete status">
                                         </button>
                                     </form>
@@ -126,7 +155,7 @@
                         }
                        
                        
-                        <a class="edit-details-button btn" href="/Games/Edit?id=@g.ID" title="Edit game details">Edit Details</a>
+                        <a class="edit-details-button btn" data-bs-toggle="modal" data-bs-target="#delete-modal" title="Edit game details" x-on:click="GetGameDetails(@g.ID); mode = 'edit'">Edit Details</a>
                     </div>
                    
                                
@@ -144,6 +173,9 @@
                                         break;
                                     case 2:
                                         s = "Complete";
+                                        break;
+                                    case 3:
+                                        s = "Wishlist";
                                         break;
                                 }
                                 <h3 style="margin-top: 8px">Deck: @s</h3>
@@ -173,7 +205,7 @@
                             }
                         }
                        
-                        <button class="delete-button btn" type="button" data-bs-toggle="modal" data-bs-target="#delete-modal-@g.ID" title="Delete game">Delete</button>
+                        <button class="delete-button btn" type="button" data-bs-toggle="modal" data-bs-target="#delete-modal" title="Delete game" x-on:click="setInfo(@g.ID, `@g.Title`); mode = 'delete'">Delete</button>
                     </div>
                 </div>
             }

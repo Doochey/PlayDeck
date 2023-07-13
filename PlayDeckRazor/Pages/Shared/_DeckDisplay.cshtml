@@ -7,70 +7,56 @@
 @{
     if (ViewData["Deck"] is Deck d)
     {
-        <div id="@d.Title-container" class="deck-display-container d-flex flex-column justify-content-center">
+        <div id="@d.Title-container" class="deck-display-container d-flex flex-column justify-content-center" x-data="{ search: '', expanded: true, showHide: 'Hide'}">
             <div id="@d.Title-header" class="deck-header d-flex">
                 <div id="@d.Title-title" class="deck-title">
                     <h1>@d.Title</h1>
                 </div>
                 <div class="add-game-button-container">
-                    <a class="add-game-button btn btn-primary" asp-page="/Games/Edit" asp-route-DeckID="@d.ID" role="button" title="Add new card to deck">+</a>
+                    <a class="add-game-button btn btn-primary" data-bs-toggle="modal" data-bs-target="#delete-modal" x-on:click="ResetGameDetails(); mode = 'add'; deckId = @d.ID; @d.ID == 2 ? playStatus = 1 : playStatus = 0; deckTitle = '@d.Title'" role="button" title="Add new card to deck">+</a>
                 </div>
                 @{
                     @* If deck is 'My Collection' (Unassigned) include search as could contain many entries *@
                     if (d.ID == 0) 
                     {
                         <div class="deck-search ">
-                            <form>
+                            <form x-on:submit.prevent="{}">
                                 <p>
-                                    <input type="text" asp-for="CollectionSearch" />
-                                    <input type="submit" value="Search" title="Search Deck"/>
+                                    <input x-on:keyup.enter.prevent="{}" type="text" x-model.debounce="search" placeholder="Search..."/>
                                 </p>
                             </form>
                         </div>
-                        <div class="view-all-container" style="margin-left: 0">
-                            <a class="view-all-button" asp-page="/Decks/View" asp-route-id="@d.ID" asp-route-Title="@d.Title">View All
-                                <span class="badge bg-secondary">@d.GameList.Count</span>
-                            </a>
+                        <div class="hide-button-container" style="margin-left: 0.5vw">
+                            <button x-on:click="expanded = ! expanded; expanded ? showHide = 'Hide' : showHide = 'Show'" x-text="showHide" class="btn btn-primary hide-button"></button>
                         </div>
                     }
                     else
                     {
-                        <div class="view-all-container">
-                            <a class="view-all-button" asp-page="/Decks/View" asp-route-id="@d.ID" asp-route-Title="@d.Title">View All
-                                <span class="badge bg-secondary">@d.GameList.Count</span>
-                            </a>
+                        <div class="hide-button-container">
+                            <button x-on:click="expanded = ! expanded; expanded ? showHide = 'Hide' : showHide = 'Show'" x-text="showHide" class="btn btn-primary hide-button"></button>
                         </div>
                     }
+                    <div class="view-all-container">
+                        <a class="view-all-button" asp-page="/Decks/View" asp-route-id="@d.ID" asp-route-Title="@d.Title">View All
+                            <span class="badge bg-secondary" >@d.GameList.Count</span>
+                        </a>
+                    </div>
                 }
+                
             </div>
-            <div id="@d.Title-display" class="deck-display d-flex justify-content-center">
-                <ul id="@d.Title-cards" class="deck d-flex flex-wrap">
+            <div id="@d.Title-display" class="deck-display d-flex justify-content-center" x-show="expanded">
+                <ul id="@d.Title-cards" class="deck d-flex flex-wrap" deckDisplay="@d.ID">
                     @{
                         List<Game> sortedList;
                         switch (d.ID)
                         {
                             case 0:
-                                @* 'My Collection', sort by alphabetical, Display 10 cards *@
-                                if (!string.IsNullOrEmpty(Model.CollectionSearch))
+                                @* 'My Collection', sort by alphabetical, Display 20 cards *@
+                                sortedList = d.GameList.OrderBy(g=>g.Title).ToList(); 
+                                for (int i = 0; i < 20 && i < sortedList.Count; i++)
                                 {
-                                    if (Model.FilteredList != null) @* If user submitted search string *@
-                                    {
-                                        sortedList = Model.FilteredList.OrderBy(g=>g.Title).ToList(); 
-                                        for (int i = 0; i <= 10 && i < sortedList.Count; i++)
-                                        {
-                                            ViewData["GameCard"] = sortedList[i];
-                                            await Html.RenderPartialAsync("_GameCard", Model);
-                                        }
-                                    }
-                                }
-                                else
-                                {
-                                    sortedList = d.GameList.OrderBy(g=>g.Title).ToList();
-                                    for (int i = 0; i <= 10 && i < sortedList.Count; i++)
-                                    {
-                                        ViewData["GameCard"] = sortedList[i];
-                                        await Html.RenderPartialAsync("_GameCard", Model);
-                                    }
+                                    ViewData["GameCard"] = sortedList[i];
+                                    await Html.RenderPartialAsync("_GameCard", Model);
                                 }
                                 break;
                             case 1:
@@ -85,6 +71,24 @@
                             case 2:
                                  @* 'Complete', Sort by most recently completed, Display 5 cards *@
                                 sortedList = d.GameList.OrderByDescending(g=>g.CompleteDate).ToList();
+                                for (int i = 0; i < 5 && i < sortedList.Count; i++)
+                                {
+                                    ViewData["GameCard"] = sortedList[i];
+                                    await Html.RenderPartialAsync("_GameCard", Model);
+                                }
+                                break;
+                            case 3:
+                                 @* 'Wishlist', Sort by most recently added (DB id), Display 5 cards *@
+                                sortedList = d.GameList.OrderByDescending(g=>g.ID).ToList();
+                                for (int i = 0; i < 5 && i < sortedList.Count; i++)
+                                {
+                                    ViewData["GameCard"] = sortedList[i];
+                                    await Html.RenderPartialAsync("_GameCard", Model);
+                                }
+                                break;
+                            case 4:
+                                 @* 'Favourites', Sort by most recently added (DB id), Display 5 cards *@
+                                sortedList = d.GameList.OrderByDescending(g=>g.ID).ToList();
                                 for (int i = 0; i < 5 && i < sortedList.Count; i++)
                                 {
                                     ViewData["GameCard"] = sortedList[i];
