@@ -33,6 +33,7 @@ document.addEventListener('alpine:init', () => {
     })
 })
 
+// Gets all game data associated with the provided id, populates alpine store with this data
 async function GetGameDetails(id) {
     await fetch('https://localhost:6610/Games/Gateway/retrieve/'+ id, {
         method: 'GET'})
@@ -46,6 +47,7 @@ async function GetGameDetails(id) {
         .catch(errorMsg => { console.log(errorMsg); });
 }
 
+// Sets all game data properties to null, ignores mode which is used for changing modal contents
 function ResetGameDetails() {
     Alpine.store('gameData').setInfoFull(null,null, null, null, null, null, null, null, null, null, null);
 }
@@ -60,6 +62,8 @@ function ShowToast(operation, text) {
     toast.show()
 }
 
+// Posts game id from modal of game to be deleted, then removes any game card of the game, 
+// Optional param true if called from the GameView, sends user to homepage as game entry is deleted
 async function SendDelete(gameView) {
     await fetch('https://localhost:6610/Games/Gateway/delete/', {
         method: 'POST',
@@ -67,6 +71,7 @@ async function SendDelete(gameView) {
         .then(response => response.text())
         .then(data => {
             if (gameView) {
+                // Entry is now deleted, send user to homepage to prevent bad requests
                 window.location.replace("https://localhost:6610/");
             } else {
                 // If game is tagged favourite there will be multiple elements with same id
@@ -79,14 +84,13 @@ async function SendDelete(gameView) {
         .catch(errorMsg => { console.log(errorMsg); });
 }
 
-
+// Posts game details from modal form, removes and replaces any game cards of the associated game using response
 async function SendEdit(id) {
     await fetch('https://localhost:6610/Games/Gateway/edit/', {
         method: 'POST',
         body: new FormData(document.querySelector('#edit-modal-form'))})
         .then(response => response.text())
         .then(data => {
-            const before = Alpine.store('gameData').deckId;
             GetGameDetails(id).then(result => {
                 // If game is tagged favourite there will be multiple elements with same id
                 while (document.querySelector('#game-card-' + id) != null) {
@@ -95,6 +99,7 @@ async function SendEdit(id) {
                 newCard = document.createElement('div');
                 newCard.innerHTML = data;
                 newCard = newCard.getElementsByTagName('li')[0];
+                newCard.parentElement.remove(); 
                 const targetDisplay = newCard.getAttribute('targetDeckDisplay');
                 deckCardsDisplay =  document.querySelector("ul[deckDisplay=" + CSS.escape(targetDisplay) + "]");
                 deckCardsDisplay ? deckCardsDisplay.prepend(newCard) : null;
@@ -107,24 +112,7 @@ async function SendEdit(id) {
         .catch(errorMsg => { console.log(errorMsg); });
 }
 
-async function SendEditGameView(id) {
-    await fetch('https://localhost:6610/Games/Gateway/editGameView/', {
-        method: 'POST',
-        body: new FormData(document.querySelector('#edit-modal-form'))})
-        .then(response => response.text())
-        .then(data => {
-            document.querySelector('#info-panel').remove();
-            newPanel = document.createElement('div');
-            newPanel.innerHTML = data;
-            newPanel = newPanel.getElementsByTagName('div')[0];
-            display =  document.querySelector("#game-info-container");
-            display ? display.prepend(newPanel) : null;
-            ShowToast('Edit', 'was modified.');
-            GetGameDetails(id);
-        })
-        .catch(errorMsg => { console.log(errorMsg); });
-}
-
+// Posts game details from modal form, adds a new game card of the associated game using response
 async function SendAdd(deckTitle) {
     await fetch('https://localhost:6610/Games/Gateway/add/', {
         method: 'POST',
@@ -133,10 +121,12 @@ async function SendAdd(deckTitle) {
         .then(data => {
             newCard = document.createElement('div');
             newCard.innerHTML = data;
+            newCard = newCard.getElementsByTagName('li')[0];
+            newCard.parentElement.remove();
             deckCardsDisplay =  document.getElementById(deckTitle + '-cards');
             deckCardsDisplay.prepend(newCard);
             document.querySelector('#edit-modal-form').reset();
-            let gameID = newCard.getElementsByTagName('li')[0].getAttribute('id').split('-')[2];
+            let gameID = newCard.getAttribute('id').split('-')[2];
             GetGameDetails(gameID);
             ShowToast('Add', 'was added to ' + deckTitle + ' deck.');
         })
@@ -144,6 +134,7 @@ async function SendAdd(deckTitle) {
     
 }
 
+// Checks input fields of modal follow validation rules
 function checkValid(el) {
     jQuery.validator.setDefaults({
         debug: true,
@@ -157,6 +148,7 @@ function checkValid(el) {
     return form.valid();
 }
 
+// Enables validation on modal as it breaks when swapping the contents
 function addValidation() {
     let form = $( "#edit-modal-form" );
     if (!form.data("validator")) {
@@ -165,35 +157,19 @@ function addValidation() {
     }
 }
 
-async function toggleFavGameView(gameID) {
-    await fetch('https://localhost:6610/Games/Gateway/togglefavgameview/', {
-        method: 'POST',
-        body: new FormData(document.querySelector('#fav-change-form'))})
-        .then(response => response.text())
-        .then(data => {
-            document.querySelector('#info-panel').remove();
-            newPanel = document.createElement('div');
-            newPanel.innerHTML = data;
-            newPanel = newPanel.getElementsByTagName('div')[0];
-            display =  document.querySelector("#game-info-container");
-            display ? display.prepend(newPanel) : null;
-            ShowToast('Edit', 'was modified.');
-            GetGameDetails(gameID);
-        })
-        .catch(errorMsg => { console.log(errorMsg); });
-}
-
+// Causes game data to be exported to CSV
 async function exportGames() {
     await fetch('https://localhost:6610/Games/Gateway/export/', {
         method: 'POST',
         body: new FormData(document.querySelector('#export-form'))})
         .then(response => response.text())
         .then(data => {
-            console.log('exported')
+            console.log('PlayDeck: Game Data Exported')
         })
         .catch(errorMsg => { console.log(errorMsg); });
 }
 
+// Causes game data to be imported from CSV, reloads page
 async function importGames() {
     await fetch('https://localhost:6610/Games/Gateway/import/', {
         method: 'POST',
@@ -201,7 +177,7 @@ async function importGames() {
         .then(response => response.text())
         .then(data => {
             location.reload();
-            console.log('imported');
+            console.log('PlayDeck: Game Data Imported');
         })
         .catch(errorMsg => { console.log(errorMsg); });
 }

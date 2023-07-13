@@ -23,6 +23,9 @@ public class GatewayModel : PageModel
     [BindProperty(SupportsGet = true)]
     public int? DeckID { get; set; }
     
+    /// <summary>
+    /// 0 = Unplayed, 1 = Complete
+    /// </summary>
     [BindProperty]
     public int? PlayStatusChange { get; set; }
     [BindProperty]
@@ -47,23 +50,32 @@ public class GatewayModel : PageModel
         _context = context;
     }
     
+    /// <summary>
+    /// Takes an ID of a game and returns all details of that game as JSON
+    /// </summary>
+    /// <param name="id">ID of Game in database</param>
+    /// <returns></returns>
     public async Task<IActionResult> OnGetRetrieveAsync(int? id)
     {
         if (_context.Game == null)
         {
-            return NotFound();
+            return new NotFoundResult();
         }
-
-        // User editing existing entry
+        
         var game =  await _context.Game.FirstOrDefaultAsync(g => g.ID == id);
         if (game == null)
         {
-            return NotFound();
+            return new NotFoundResult();
         }
         Game = game;
         return new OkObjectResult(game.ToJson());
     }
 
+    /// <summary>
+    /// Saves all changes of the posted game if it exists in the database
+    /// Returns HTML of a new Game Card with updated details.
+    /// </summary>
+    /// <returns>_GameCard HTML</returns>
     public async Task<IActionResult> OnPostEditAsync()
     {
         if (!ModelState.IsValid)
@@ -108,6 +120,11 @@ public class GatewayModel : PageModel
         return new BadRequestResult();
     }
     
+    /// <summary>
+    /// Saves all changes of the posted game if it exists in the database
+    /// Returns HTML of a new Game Info Panel with updated details.
+    /// </summary>
+    /// <returns>_GameInfoPanel HTML</returns>
     public async Task<IActionResult> OnPostEditGameViewAsync()
     {
         if (!ModelState.IsValid)
@@ -152,6 +169,11 @@ public class GatewayModel : PageModel
         return new BadRequestResult();
     }
 
+    /// <summary>
+    /// Adds posted game to the database
+    /// Returns HTML of new Game Card
+    /// </summary>
+    /// <returns>_GameCard HTML</returns>
     public async Task<IActionResult> OnPostAddAsync()
     {
         if (ModelState.IsValid && !GameExists(Game.ID))
@@ -186,6 +208,10 @@ public class GatewayModel : PageModel
         return (_context.Game?.Any(e => e.ID == id)).GetValueOrDefault();
     }
     
+    /// <summary>
+    /// Finds game with posted ID and removes it from the database
+    /// </summary>
+    /// <returns>Posted Game ID</returns>
     public async Task<IActionResult> OnPostDeleteAsync()
     {
         
@@ -206,6 +232,11 @@ public class GatewayModel : PageModel
         return new BadRequestResult();
     }
 
+    /// <summary>
+    /// Finds game by posted Game ID and updates its rating property
+    /// Returns HTML of new Game Info Panel
+    /// </summary>
+    /// <returns>_GameInfoPanel HTML</returns>
     public async Task<IActionResult> OnPostRatingChangeAsync()
     {
         Game = await _context.Game.FindAsync(GameID);
@@ -239,6 +270,11 @@ public class GatewayModel : PageModel
         };
     }
 
+    /// <summary>
+    /// Finds game by posted Game ID and updates its PlayStatus property
+    /// Returns new Game Info Panel HTML
+    /// </summary>
+    /// <returns>_GameInfoPanel HTML</returns>
     public async Task<IActionResult> OnPostPlayStatusChangeAsync()
     {
         Game = await _context.Game.FindAsync(GameID);
@@ -272,6 +308,11 @@ public class GatewayModel : PageModel
         };
     }
     
+    /// <summary>
+    /// Finds game by posted Game ID and updates its Favourite property
+    /// Returns new Game Info Panel HTML
+    /// </summary>
+    /// <returns>_GameInfoPanel HTML</returns>
     public async Task<IActionResult> OnPostToggleFavGameViewAsync()
     {
         Game = await _context.Game.FindAsync(GameID);
@@ -306,6 +347,10 @@ public class GatewayModel : PageModel
         };
     }
 
+    /// <summary>
+    /// Outputs details of every game in the database to a CSV file
+    /// </summary>
+    /// <returns></returns>
     public async Task<IActionResult> OnPostExportAsync()
     {
         List<object> games = (from Game in _context.Game
@@ -361,6 +406,11 @@ public class GatewayModel : PageModel
         return new OkObjectResult(1);
     }
 
+    /// <summary>
+    /// Imports all game data from CSV File, Does not preserve IDs, all games are added as new
+    /// Will likely cause duplicates if used on a non-empty database
+    /// </summary>
+    /// <returns></returns>
     public async Task<IActionResult> OnPostImportAsync()
     {
         var systemPath = System.Environment.

@@ -51,7 +51,7 @@
                         switch (d.ID)
                         {
                             case 0:
-                                @* 'My Collection', sort by alphabetical, Display 10 cards *@
+                                @* 'My Collection', sort by alphabetical, Display 20 cards *@
                                 sortedList = d.GameList.OrderBy(g=>g.Title).ToList(); 
                                 for (int i = 0; i < 20 && i < sortedList.Count; i++)
                                 {

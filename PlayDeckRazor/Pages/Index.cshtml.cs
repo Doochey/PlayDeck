@@ -10,8 +10,9 @@ public class IndexModel : PageModel
     public readonly PlayDeckRazorContext _context;
 
     /// <summary>
-    /// List of Decks containing all Games in the DB, Max 10 decks, 0 = Unassigned, 1 = On deck, 2 = completed
-    /// 3 -> 10 for user allocation
+    /// List of Decks containing all Games in the DB, Max 10 decks, 0 = Unassigned, 1 = Currently Playing, 2 = completed,
+    /// 3 = Wishlist, 4 = Favourites
+    /// 5 -> 10 for user allocation
     /// </summary>
     public List<Deck> Decks = new List<Deck>(10);
 
@@ -51,6 +52,8 @@ public class IndexModel : PageModel
         await foreach (Game g in _context.Game)
         {
             Decks[g.DeckID].GameList.Add(g);
+            // Games tagged as favourites exist in other decks, i.e. their DeckID does not determine if they
+            // should appear in the favourites deck
             if (g.Favourite)
             {
                 Decks[4].GameList.Add(g);

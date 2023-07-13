@@ -51,6 +51,7 @@ public class ViewModel : PageModel
         }
         else
         {
+            // Viewing Favourites deck, get all games tagged as favourite
             var games = 
                 from g in _context.Game
                 select g;
