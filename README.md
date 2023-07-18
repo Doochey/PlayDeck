@@ -110,7 +110,8 @@ Visit the [Releases](https://github.com/Doochey/PlayDeck/releases) tab and downl
 
 
 5. Open your browser and navigate to https://localhost:6610/
-6. Unless you are using a Demo version you should see this: ![image](https://github.com/Doochey/PlayDeck/assets/22661442/e18ee891-f7c8-4f5a-9333-fa9b8caca0a8)
+6. Unless you are using a Demo version you should see this: ![image](https://github.com/Doochey/PlayDeck/assets/22661442/9db01e1f-57e0-4149-a8db-287910928e6a)
+
 
 
 7. You are now ready to use PlayDeck! Begin by adding games to any of the four decks by clicking the + buttons. When you're done, close the console and browser window, 
@@ -127,32 +128,34 @@ Visit the [Releases](https://github.com/Doochey/PlayDeck/releases) tab and downl
 Adding a new game:
 
 Click +
-![add game gif](https://github.com/Doochey/PlayDeck/assets/22661442/2a80749b-8f6b-4d31-a5c5-382ac0a5d0d4)
+
+![Add new game gif](https://github.com/Doochey/PlayDeck/assets/22661442/c1c5d6e0-4643-4e39-81de-8b85e20d2857)
 
 
 Enter details and click 'Create'
-![image](https://github.com/Doochey/PlayDeck/assets/22661442/5ef67f1e-0e0a-4e70-90fe-ddeaac9e3c31)
+
+![Add new game result gif](https://github.com/Doochey/PlayDeck/assets/22661442/86629baf-0319-46bc-8664-14873075605a)
 
 
 Deleting a game from the deck view:
 
 Hover over the card and click the 'X' button
-![delete gif](https://github.com/Doochey/PlayDeck/assets/22661442/44b2e66d-52c3-4361-b9f0-68d484a7474a)
+
+![Delete Game from card gif](https://github.com/Doochey/PlayDeck/assets/22661442/98c9d759-b296-4a91-b663-96116e89e419)
 
 
 Deleting a game from the game details view:
 
 Click the delete button
-![delete gif 2](https://github.com/Doochey/PlayDeck/assets/22661442/13fd28fa-5208-4741-baea-5cc05c0622c3)
 
+![Delete Game from game view gif](https://github.com/Doochey/PlayDeck/assets/22661442/3bf29bd7-5457-414a-a756-aad9751c05d4)
 
 To edit any details about a game, such as which deck the game appears in, either:
-* Click the buttons on the game details page, this is only available for the Title,Star Rating, Favourite, and Complete Trophy
+* Click the buttons on the game details page, this is only available for the Star Rating, Favourite, and Complete Trophy
 * Click the 'Edit Details' button on the game details page
 * Hover over the card in the deck view and click the pencil button
 
-![image](https://github.com/Doochey/PlayDeck/assets/22661442/9a29c9d7-8b64-4e82-97e3-36ef5de8153d)
-
+![Edit Gif](https://github.com/Doochey/PlayDeck/assets/22661442/d6999205-cc32-4dfa-bfa0-9a73a212655e)
 
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
@@ -197,7 +200,7 @@ Project Link: [https://github.com/Doochey/PlayDeck](https://github.com/Doochey/P
 [license-url]: https://github.com/Doochey/PlayDeck/blob/master/LICENSE.txt
 [linkedin-shield]: https://img.shields.io/badge/-LinkedIn-black.svg?style=for-the-badge&logo=linkedin&colorB=555
 [linkedin-url]: https://linkedin.com/in/connordouch
-[product-screenshot]: https://github.com/Doochey/PlayDeck/assets/22661442/9e592298-21f7-4810-9f16-3f66bc16a847
+[product-screenshot]: https://github.com/Doochey/PlayDeck/assets/22661442/9b06463f-cbfb-4e25-85ae-1395dd3de181
 [Bootstrap.com]: https://img.shields.io/badge/Bootstrap-563D7C?style=for-the-badge&logo=bootstrap&logoColor=white
 [Bootstrap-url]: https://getbootstrap.com
 [Alpine.js]: https://img.shields.io/badge/Alpine.js-blue?style=for-the-badge&logo=Alpine.js&logoColor=white
